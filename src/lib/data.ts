@@ -8,6 +8,12 @@ export const ALL_COLORS = [
   { name: 'Charcoal', value: '#333333' },
   { name: 'Terracotta', value: '#E2725B' },
   { name: 'Forest Green', value: '#228B22' },
+  { name: 'Sage Green', value: '#B2AC88' },
+  { name: 'Dusty Rose', value: '#D8AFA0' },
+  { name: 'Cobalt Blue', value: '#0047AB' },
+  { name: 'Cream White', value: '#F5F5DC' },
+  { name: 'Deep Teal', value: '#008080' },
+  { name: 'Mustard Yellow', value: '#FFDB58' }
 ];
 
 
