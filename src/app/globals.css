@@ -56,9 +56,8 @@
 
   .animated-bubble {
     @apply absolute rounded-full;
-    /* Using a more prominent brown color as requested, but still transparent and blurred */
-    background-color: hsl(var(--primary) / 0.12);
-    filter: blur(60px); /* Slightly less blur to make the shape more defined */
+    background-color: hsl(var(--primary) / 0.2);
+    filter: blur(40px);
     animation: calm-move 80s infinite alternate ease-in-out;
   }
 
@@ -79,7 +78,7 @@
     animation-name: calm-move-2;
     animation-duration: 100s;
     animation-delay: -10s;
-    background-color: hsl(var(--primary) / 0.1); /* Varied opacity */
+    background-color: hsl(var(--primary) / 0.18); /* Varied opacity */
   }
 
   .animated-bubble:nth-child(3) {
@@ -89,7 +88,7 @@
     left: 5%;
     animation-duration: 120s;
     animation-delay: -20s;
-    background-color: hsl(var(--primary) / 0.15); /* More opaque */
+    background-color: hsl(var(--primary) / 0.25); /* More opaque */
   }
   
   .animated-bubble:nth-child(4) {
@@ -109,7 +108,7 @@
     left: 30%;
     animation-duration: 110s;
     animation-delay: -15s;
-    background-color: hsl(var(--primary) / 0.08);
+    background-color: hsl(var(--primary) / 0.15);
   }
 }
 

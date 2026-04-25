@@ -2,7 +2,7 @@
 
 export function AnimatedBackground() {
   return (
-    <div className="fixed inset-0 -z-10 h-full w-full overflow-hidden">
+    <div className="fixed inset-0 h-full w-full overflow-hidden">
       <div className="animated-bubble"></div>
       <div className="animated-bubble"></div>
       <div className="animated-bubble"></div>
