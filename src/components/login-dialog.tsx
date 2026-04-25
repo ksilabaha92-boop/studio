@@ -59,7 +59,7 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
   async function onSubmit(values: z.infer<typeof LoginSchema>) {
     setIsSubmitting(true);
     try {
-      // First, try to sign in.
+      // First, try to sign in. If it succeeds, the user is an existing admin.
       await signInWithEmailAndPassword(auth, values.email, values.password);
       toast({
         title: 'Success',
@@ -67,12 +67,10 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
       });
       onOpenChange(false);
       router.push('/admin');
-
     } catch (error: any) {
-      // If user is not found, create a new admin user.
-      const isUserNotFound = error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential';
-
-      if (isUserNotFound) {
+      // If sign-in fails, check the error code.
+      if (error.code === 'auth/user-not-found') {
+        // If the user does not exist, create a new admin account.
         try {
           const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
           const user = userCredential.user;
@@ -80,7 +78,6 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
           // Add the new user to the 'admins' collection to grant privileges.
           if (firestore) {
              const adminRef = doc(firestore, 'admins', user.uid);
-             // We set a basic object, the existence of the document is what grants admin rights.
              await setDoc(adminRef, { uid: user.uid, email: user.email, createdAt: serverTimestamp() });
           }
           
@@ -94,33 +91,31 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
         } catch (creationError: any) {
           console.error('Admin creation failed:', creationError);
           let description = 'Could not create an admin account.';
-          if (creationError.code) {
-              if (creationError.code === 'auth/weak-password') {
-                  description = 'The password is too weak. Please use at least 6 characters.';
-              } else if (creationError.code === 'auth/email-already-in-use') {
-                  description = 'This email is already in use by another account.';
-              }
+          if (creationError.code === 'auth/weak-password') {
+              description = 'The password is too weak. Please use at least 6 characters.';
+          }
+          // The 'auth/email-already-in-use' case during creation is less likely with this logic
+          // but kept as a safeguard.
+          else if (creationError.code === 'auth/email-already-in-use') {
+              description = 'This email is already in use. Please try logging in.';
           }
           toast({
             variant: 'destructive',
             title: 'Account Creation Failed',
             description: description,
           });
-          form.setError('email', { message: ' ' });
-          form.setError('password', { message: ' ' });
         }
       } else {
-        // Handle other errors like wrong password
+        // Handle other login errors, like incorrect password.
+        // 'auth/invalid-credential' is the modern code for wrong password.
         console.error('Admin login failed:', error);
-        let description = 'The email or password you entered is incorrect.';
-         if (error.code === 'auth/wrong-password') {
-            description = 'The password you entered is incorrect.';
-         }
         toast({
           variant: 'destructive',
           title: 'Authentication Failed',
-          description: description,
+          description: 'The email or password you entered is incorrect.',
         });
+        // Set a single error message that applies to the form, not a specific field.
+        form.setError('email', { message: ' ' }); // Use a space to show the field is in error without a message
         form.setError('password', { message: 'Incorrect email or password' });
       }
     } finally {
