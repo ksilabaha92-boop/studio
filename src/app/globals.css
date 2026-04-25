@@ -56,49 +56,60 @@
 
   .animated-bubble {
     @apply absolute rounded-full;
-    background-color: hsl(var(--primary) / 0.08);
-    filter: blur(70px);
+    /* Using a more prominent brown color as requested, but still transparent and blurred */
+    background-color: hsl(var(--primary) / 0.12);
+    filter: blur(60px); /* Slightly less blur to make the shape more defined */
     animation: calm-move 80s infinite alternate ease-in-out;
   }
 
-  .animated-bubble:nth-child(2) {
+  /* Styling each bubble to be more spread out and varied, like cow spots */
+  .animated-bubble:nth-child(1) {
     width: 350px;
     height: 350px;
-    top: 15%;
-    left: 70%;
+    top: -5%;
+    left: -10%;
+    animation-duration: 90s;
+  }
+  
+  .animated-bubble:nth-child(2) {
+    width: 300px;
+    height: 300px;
+    top: 20%;
+    left: 85%;
     animation-name: calm-move-2;
     animation-duration: 100s;
     animation-delay: -10s;
-    background-color: hsl(var(--accent) / 0.1);
+    background-color: hsl(var(--primary) / 0.1); /* Varied opacity */
   }
 
   .animated-bubble:nth-child(3) {
-    width: 300px;
-    height: 300px;
-    top: 60%;
+    width: 400px;
+    height: 400px;
+    top: 65%;
     left: 5%;
     animation-duration: 120s;
     animation-delay: -20s;
+    background-color: hsl(var(--primary) / 0.15); /* More opaque */
   }
   
   .animated-bubble:nth-child(4) {
     width: 250px;
     height: 250px;
     top: 80%;
-    left: 60%;
+    left: 70%;
     animation-name: calm-move-2;
     animation-duration: 90s;
     animation-delay: -5s;
-    background-color: hsl(var(--primary) / 0.06);
   }
   
   .animated-bubble:nth-child(5) {
     width: 200px;
     height: 200px;
-    top: 30%;
+    top: 35%;
     left: 30%;
     animation-duration: 110s;
     animation-delay: -15s;
+    background-color: hsl(var(--primary) / 0.08);
   }
 }
 
