@@ -19,7 +19,7 @@ export function Footer() {
       <div className="container relative z-10 mx-auto px-4 text-center">
         <TohfaLogo size="small" className="mx-auto mb-8 text-background" />
 
-        <p className="font-cursive text-3xl max-w-md mx-auto text-background/80 mb-8">
+        <p className="font-headline text-xl max-w-md mx-auto text-background/80 mb-8">
           From our hands to your home, each piece tells a story of earth, fire, and passion.
         </p>
 
