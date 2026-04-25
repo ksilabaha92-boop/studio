@@ -31,16 +31,19 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
-// Password needs to be at least 6 characters for Firebase Auth
+// Only validate the password field
 const LoginSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
+  password: z.string().min(1, { message: 'Password is required.' }),
 });
 
 type LoginDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
+
+// This will be the hidden, single admin account email and the required password.
+const ADMIN_EMAIL = 'admin@tohfa.com';
+const ADMIN_PASSWORD = 'zxcvbnm';
 
 export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
   const router = useRouter();
@@ -51,16 +54,29 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: '',
       password: '',
     },
   });
 
   async function onSubmit(values: z.infer<typeof LoginSchema>) {
     setIsSubmitting(true);
+
+    // First, check if the entered password is correct.
+    if (values.password !== ADMIN_PASSWORD) {
+      toast({
+        variant: 'destructive',
+        title: 'Authentication Failed',
+        description: 'The password you entered is incorrect.',
+      });
+      form.setError('password', { message: 'Incorrect password' });
+      setIsSubmitting(false);
+      return;
+    }
+    
+    // If password is correct, proceed with the sign-in or create logic.
     try {
-      // First, try to sign in.
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      // Try to sign in with the hardcoded credentials.
+      await signInWithEmailAndPassword(auth, ADMIN_EMAIL, ADMIN_PASSWORD);
       toast({
         title: 'Success',
         description: 'Welcome back, Admin!',
@@ -68,54 +84,36 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
       onOpenChange(false);
       router.push('/admin');
     } catch (signInError: any) {
-      // If sign-in fails, it could be a wrong password or a new user.
-      // The modern Firebase Auth SDK often uses 'auth/invalid-credential' for both.
+      // If sign-in fails, it's likely because the account doesn't exist yet.
+      // Codes 'auth/invalid-credential' or 'auth/user-not-found' indicate this.
       if (signInError.code === 'auth/invalid-credential' || signInError.code === 'auth/user-not-found') {
-        // Let's try to create a new account.
         try {
-          const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+          // Create the admin account for the first time.
+          const userCredential = await createUserWithEmailAndPassword(auth, ADMIN_EMAIL, ADMIN_PASSWORD);
           const user = userCredential.user;
 
-          // If creation is successful, add to 'admins' collection.
+          // Add the user to the 'admins' collection to grant privileges.
           if (firestore) {
              const adminRef = doc(firestore, 'admins', user.uid);
              await setDoc(adminRef, { uid: user.uid, email: user.email, createdAt: serverTimestamp() });
           }
           
           toast({
-            title: 'Admin Account Created',
-            description: 'Welcome! You now have admin access.',
+            title: 'Admin Account Initialized',
+            description: 'Welcome! The admin account has been set up.',
           });
           onOpenChange(false);
           router.push('/admin');
 
         } catch (creationError: any) {
-          // If account creation fails...
-          if (creationError.code === 'auth/email-already-in-use') {
-            // ...it's because the email exists. So, the original password was wrong.
-            toast({
+          // This block should ideally not be hit if the password meets Firebase requirements,
+          // but it's good for catching unexpected errors during first-time setup.
+          console.error('Admin account creation failed unexpectedly:', creationError);
+          toast({
               variant: 'destructive',
-              title: 'Authentication Failed',
-              description: 'The password you entered is incorrect.',
+              title: 'Setup Error',
+              description: 'Could not create the admin account. Please check the console.',
             });
-            form.setError('password', { message: 'Incorrect password' });
-          } else if (creationError.code === 'auth/weak-password') {
-            // Handle weak password specifically.
-            toast({
-              variant: 'destructive',
-              title: 'Account Creation Failed',
-              description: 'The password is too weak. Please use at least 6 characters.',
-            });
-            form.setError('password', { message: 'Password must be at least 6 characters.' });
-          } else {
-            // A different, unexpected error during account creation.
-            console.error('Admin creation failed:', creationError);
-            toast({
-                variant: 'destructive',
-                title: 'An Error Occurred',
-                description: 'Could not create an admin account. Please try again.',
-              });
-          }
         }
       } else {
         // Handle other, unexpected sign-in errors.
@@ -139,28 +137,11 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
             <KeyRound className="w-6 h-6" /> Admin Access
           </DialogTitle>
           <DialogDescription>
-            Enter your desired admin email and password. If the account doesn't exist, it will be created for you.
+            Enter the site password to access the admin dashboard.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="admin@example.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="password"
