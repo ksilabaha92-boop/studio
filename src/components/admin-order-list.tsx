@@ -79,7 +79,7 @@ const toDate = (timestamp: Timestamp | Date | string): Date => {
     if (timestamp && typeof (timestamp as any).seconds === 'number') {
       return new Timestamp((timestamp as any).seconds, (timestamp as any).nanoseconds || 0).toDate();
     }
-    return new Date(); // Or return a specific invalid date
+    return new Date(); // Return current date as a fallback to prevent crashing
   };
 
 export function AdminOrderList() {
