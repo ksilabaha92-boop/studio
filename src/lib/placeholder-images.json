@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "pottery-vase-1",
+      "description": "An elegant, tall ceramic vase with a textured finish.",
+      "imageUrl": "https://picsum.photos/seed/pottery1/800/1000",
+      "imageHint": "ceramic vase"
+    },
+    {
+      "id": "pottery-bowl-1",
+      "description": "A wide, shallow bowl, perfect for fruits or as a centerpiece.",
+      "imageUrl": "https://picsum.photos/seed/pottery2/800/800",
+      "imageHint": "pottery bowl"
+    },
+    {
+      "id": "pottery-cup-1",
+      "description": "A rustic handcrafted mug with a comfortable, large handle.",
+      "imageUrl": "https://picsum.photos/seed/pottery3/800/800",
+      "imageHint": "ceramic cup"
+    },
+    {
+      "id": "pottery-plate-1",
+      "description": "A set of four dinner plates with a subtle speckled glaze.",
+      "imageUrl": "https://picsum.photos/seed/pottery4/800/800",
+      "imageHint": "ceramic plate"
+    },
+    {
+      "id": "pottery-pot-1",
+      "description": "A decorative pot with intricate carvings, ideal for indoor plants.",
+      "imageUrl": "https://picsum.photos/seed/pottery5/800/900",
+      "imageHint": "decorative pot"
+    },
+    {
+      "id": "pottery-pitcher-1",
+      "description": "A classic ceramic pitcher for serving beverages.",
+      "imageUrl": "https://picsum.photos/seed/pottery6/800/1000",
+      "imageHint": "ceramic pitcher"
+    }
+  ]
 }
