@@ -31,8 +31,8 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-16">
-        <ProductGallery />
         <BrandNarrative />
+        <ProductGallery />
       </main>
       <Footer />
     </div>

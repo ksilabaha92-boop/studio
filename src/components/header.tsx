@@ -3,18 +3,19 @@
 import { useState } from 'react';
 import { TohfaLogo } from './tohfa-logo';
 import { LoginDialog } from './login-dialog';
+import { cn } from '@/lib/utils';
 
 export function Header() {
   const [isLoginOpen, setLoginOpen] = useState(false);
 
   return (
     <>
-      <header className="py-6">
+      <header className="py-8">
         <div className="container mx-auto flex justify-center">
           <button
             onClick={() => setLoginOpen(true)}
             aria-label="Open Admin Login"
-            className="transition-transform duration-300 hover:scale-105"
+            className={cn("transition-transform duration-300 hover:scale-105", "text-glow")}
           >
             <TohfaLogo size="small" />
           </button>
