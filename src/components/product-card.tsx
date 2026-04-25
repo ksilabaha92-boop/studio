@@ -20,8 +20,8 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-[#4a2e1a]/20 via-transparent to-transparent" />
       </div>
       <div className="pt-4 text-center">
-        <h3 className="font-headline text-2xl text-foreground transition-colors group-hover:text-primary">{product.name}</h3>
-        <p className="mt-1 font-body text-lg text-primary">{product.price} TND</p>
+        <h3 className="font-headline text-xl text-foreground transition-colors group-hover:text-primary">{product.name}</h3>
+        <p className="mt-1 font-body text-base font-medium text-primary">{product.price} TND</p>
       </div>
     </Link>
   );
