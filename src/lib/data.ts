@@ -13,8 +13,14 @@ export const ALL_COLORS = [
   { name: 'Cobalt Blue', value: '#0047AB' },
   { name: 'Cream White', value: '#F5F5DC' },
   { name: 'Deep Teal', value: '#008080' },
-  { name: 'Mustard Yellow', value: '#FFDB58' }
+  { name: 'Mustard Yellow', value: '#FFDB58' },
+  { name: 'Crimson Red', value: '#DC143C' },
+  { name: 'Brick Red', value: '#CB4154' },
+  { name: 'Lavender', value: '#E6E6FA' },
+  { name: 'Olive Green', value: '#808000' },
+  { name: 'Slate Blue', value: '#6A5ACD' }
 ];
 
 
 export const initialProducts: Product[] = [];
+
