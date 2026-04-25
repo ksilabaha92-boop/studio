@@ -71,8 +71,8 @@
 
   .animated-bubble {
     @apply absolute rounded-full;
-    background-color: hsl(var(--primary) / 0.2);
-    filter: blur(60px);
+    background-color: hsl(var(--primary) / 0.25);
+    filter: blur(50px);
     animation: move 20s infinite alternate;
   }
 
@@ -83,7 +83,7 @@
     left: 80%;
     animation-duration: 25s;
     animation-delay: -5s;
-    background-color: hsl(var(--accent) / 0.15);
+    background-color: hsl(var(--accent) / 0.2);
   }
 
   .animated-bubble:nth-child(3) {
@@ -102,7 +102,7 @@
     left: 90%;
     animation-duration: 35s;
     animation-delay: -15s;
-    background-color: hsl(var(--accent) / 0.2);
+    background-color: hsl(var(--accent) / 0.25);
   }
   
   .animated-bubble:nth-child(5) {

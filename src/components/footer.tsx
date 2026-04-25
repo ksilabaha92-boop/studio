@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="bg-secondary/50 py-8 mt-16">
+    <footer className="bg-muted py-8 mt-16">
       <div className="container mx-auto px-4 text-center">
         <div className="flex justify-center items-center gap-4 mb-4">
           <Button variant="ghost" size="icon" asChild>
@@ -18,8 +18,8 @@ export function Footer() {
             </Link>
           </Button>
         </div>
-        <p className="text-muted-foreground">Tohfafino</p>
-        <p className="font-body text-sm text-muted-foreground mt-2">By Azizos</p>
+        <p className="font-headline text-lg text-primary">Tohfafino</p>
+        <p className="font-headline text-sm text-muted-foreground mt-1">By Azizos</p>
       </div>
     </footer>
   );
