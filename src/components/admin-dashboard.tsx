@@ -17,6 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { ScrollArea } from './ui/scroll-area';
 
 export function AdminDashboard() {
   const { products, addProduct, updateProduct, removeProduct, isInitialized } =
@@ -131,12 +132,14 @@ export function AdminDashboard() {
               {productToEdit ? 'Edit Product' : 'Add New Product'}
             </DialogTitle>
           </DialogHeader>
-          <ProductForm
-            onProductAdd={addProduct}
-            onProductUpdate={updateProduct}
-            productToEdit={productToEdit}
-            onFormSubmit={closeForm}
-          />
+          <ScrollArea className="max-h-[60vh] pr-4">
+            <ProductForm
+              onProductAdd={addProduct}
+              onProductUpdate={updateProduct}
+              productToEdit={productToEdit}
+              onFormSubmit={closeForm}
+            />
+          </ScrollArea>
         </DialogContent>
       </Dialog>
     </div>
