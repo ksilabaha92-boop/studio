@@ -45,12 +45,12 @@ export default function ProductDetailPage() {
         <Header />
         <main className="flex-grow container mx-auto px-4 py-16">
           <div className="grid md:grid-cols-2 gap-16">
-            <Skeleton className="w-full aspect-square rounded-lg" />
+            <Skeleton className="w-full aspect-square rounded-lg bg-card" />
             <div className="space-y-8">
-              <Skeleton className="h-14 w-3/4" />
-              <Skeleton className="h-8 w-1/4" />
-              <Skeleton className="h-24 w-full" />
-              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-14 w-3/4 bg-card" />
+              <Skeleton className="h-8 w-1/4 bg-card" />
+              <Skeleton className="h-24 w-full bg-card" />
+              <Skeleton className="h-12 w-full bg-card" />
             </div>
           </div>
         </main>
@@ -86,7 +86,7 @@ export default function ProductDetailPage() {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-12 md:py-20">
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
-          <div className="aspect-square relative rounded-lg overflow-hidden element-glow">
+          <div className="aspect-square relative rounded-lg overflow-hidden bg-card element-glow">
             <Image
               src={product.mainImageUrl}
               alt={product.name}
@@ -126,7 +126,7 @@ export default function ProductDetailPage() {
 
             <Sheet open={isOrderSheetOpen} onOpenChange={setOrderSheetOpen}>
               <SheetTrigger asChild>
-                <Button size="lg" className="w-full text-lg py-7 bg-primary text-primary-foreground hover:bg-primary/90" disabled={!selectedColor}>
+                <Button size="lg" className="w-full text-lg py-7 bg-primary text-primary-foreground hover:bg-primary/90 btn-clay" disabled={!selectedColor}>
                   <ShoppingCart className="mr-3 h-6 w-6" />
                   {selectedColor ? 'Place Order' : 'Select a color first'}
                 </Button>
