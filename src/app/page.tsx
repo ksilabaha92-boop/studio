@@ -32,7 +32,7 @@ export default function Home() {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-16">
         <p className="text-center font-cursive text-2xl text-foreground/80 mb-12">
-          مع tohfafino حيث تتحول البساطة إلى تحفة تُروى بتفاصيلها.
+          Where simplicity is transformed into a masterpiece, told in every detail.
         </p>
         <ProductGallery />
         <BrandNarrative />
