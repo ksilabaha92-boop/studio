@@ -35,7 +35,7 @@ type LoginDialogProps = {
 };
 
 // This should be an environment variable in a real app
-const ADMIN_PASSWORD = 'TohfaAdmin2024';
+const ADMIN_PASSWORD = 'TohfafinoAdmin2024';
 
 export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
   const router = useRouter();

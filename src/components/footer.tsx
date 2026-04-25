@@ -8,7 +8,7 @@ export function Footer() {
       <div className="container mx-auto px-4 text-center">
         <div className="flex justify-center items-center gap-4 mb-4">
           <Button variant="ghost" size="icon" asChild>
-            <Link href="https://instagram.com/tohfa" target="_blank" aria-label="Instagram">
+            <Link href="https://instagram.com/tohfafino" target="_blank" aria-label="Instagram">
               <Instagram className="h-6 w-6 text-primary" />
             </Link>
           </Button>
@@ -18,7 +18,7 @@ export function Footer() {
             </Link>
           </Button>
         </div>
-        <p className="text-muted-foreground">Tohfa Atelier</p>
+        <p className="text-muted-foreground">Tohfafino</p>
         <p className="font-body text-sm text-muted-foreground mt-2">By Azizos</p>
       </div>
     </footer>

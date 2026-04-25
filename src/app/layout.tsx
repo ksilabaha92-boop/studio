@@ -5,7 +5,7 @@ import { AnimatedBackground } from '@/components/animated-background';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Tohfa Atelier',
+  title: 'Tohfafino',
   description: 'Handcrafted pottery with a touch of soul.',
 };
 

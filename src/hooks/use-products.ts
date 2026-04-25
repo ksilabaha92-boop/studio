@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { type Product } from '@/lib/types';
 import { initialProducts } from '@/lib/data';
 
-const STORAGE_KEY = 'tohfa-products';
+const STORAGE_KEY = 'tohfafino-products';
 
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
