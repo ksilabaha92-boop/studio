@@ -45,10 +45,10 @@ export default function ProductDetailPage() {
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-grow container mx-auto px-4 py-16">
-          <div className="grid md:grid-cols-2 gap-16">
-            <Skeleton className="w-full aspect-square rounded-lg bg-card" />
-            <div className="space-y-8">
-              <Skeleton className="h-14 w-3/4 bg-card" />
+          <div className="max-w-3xl mx-auto">
+            <Skeleton className="w-full aspect-[4/3] rounded-lg bg-card mb-8" />
+            <div className="space-y-6">
+              <Skeleton className="h-12 w-3/4 bg-card" />
               <Skeleton className="h-8 w-1/4 bg-card" />
               <Skeleton className="h-24 w-full bg-card" />
               <Skeleton className="h-12 w-full bg-card" />
@@ -86,8 +86,8 @@ export default function ProductDetailPage() {
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-12 md:py-20">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
-          <div className="aspect-square relative rounded-lg overflow-hidden bg-card element-glow">
+        <div className="max-w-3xl mx-auto">
+          <div className="aspect-[4/3] relative rounded-lg overflow-hidden bg-card element-glow mb-12">
             {product.onSale && (
                 <Badge variant="destructive" className="absolute top-4 right-4 z-10 text-base py-1 px-3">
                     <BadgePercent className="mr-2 h-5 w-5" />
@@ -102,32 +102,32 @@ export default function ProductDetailPage() {
               data-ai-hint={product.imageHint}
             />
           </div>
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div>
-              <h1 className="font-headline text-4xl md:text-5xl text-foreground text-glow">{product.name}</h1>
+              <h1 className="font-headline text-4xl text-foreground text-glow">{product.name}</h1>
               {product.onSale && product.discountPrice ? (
-                <div className="flex items-baseline gap-4 mt-2">
-                    <p className="font-body font-medium text-3xl text-primary">{product.discountPrice} TND</p>
-                    <p className="font-body font-medium text-xl text-muted-foreground line-through">{product.price} TND</p>
+                <div className="flex items-baseline gap-3 mt-2">
+                    <p className="font-body font-medium text-2xl text-primary">{product.discountPrice} TND</p>
+                    <p className="font-body font-medium text-lg text-muted-foreground line-through">{product.price} TND</p>
                 </div>
               ) : (
-                <p className="font-body font-medium text-3xl text-primary mt-2">{product.price} TND</p>
+                <p className="font-body font-medium text-2xl text-primary mt-2">{product.price} TND</p>
               )}
             </div>
             
             <Separator />
             
-            <p className="text-lg text-foreground/70 leading-relaxed">{product.description}</p>
+            <p className="text-base text-foreground/80 leading-relaxed">{product.description}</p>
             
             <div>
-              <h3 className="font-body font-medium text-foreground mb-4">Color</h3>
-              <div className="flex items-center gap-3">
+              <h3 className="font-body font-medium text-foreground mb-3">Color</h3>
+              <div className="flex flex-wrap items-center gap-3">
                 {product.colors.map((color, index) => (
                   <button
                     key={index}
                     onClick={() => handleColorSelect(color)}
                     className={cn(
-                      "h-10 w-10 rounded-full border-2 transition-all duration-200",
+                      "h-9 w-9 rounded-full border-2 transition-all duration-200",
                       selectedColor === color ? 'border-primary scale-110 ring-2 ring-primary ring-offset-2 ring-offset-background' : 'border-border/50',
                     )}
                     style={{ backgroundColor: color }}
@@ -140,8 +140,8 @@ export default function ProductDetailPage() {
 
             <Sheet open={isOrderSheetOpen} onOpenChange={setOrderSheetOpen}>
               <SheetTrigger asChild>
-                <Button size="lg" className="w-full text-lg py-7 bg-primary text-primary-foreground hover:bg-primary/90 btn-clay" disabled={!selectedColor}>
-                  <ShoppingCart className="mr-3 h-6 w-6" />
+                <Button size="lg" className="w-full text-lg py-6 bg-primary text-primary-foreground hover:bg-primary/90 btn-clay" disabled={!selectedColor}>
+                  <ShoppingCart className="mr-3 h-5 w-5" />
                   {selectedColor ? 'Place Order' : 'Select a color first'}
                 </Button>
               </SheetTrigger>
