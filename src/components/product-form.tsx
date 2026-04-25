@@ -21,6 +21,8 @@ import { ALL_COLORS } from '@/lib/data';
 import { Checkbox } from './ui/checkbox';
 import { useState } from 'react';
 import Image from 'next/image';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronsUpDown } from "lucide-react";
 
 const ProductFormSchema = z.object({
   name: z.string().min(3, { message: 'Name must be at least 3 characters' }),
@@ -133,35 +135,49 @@ export function ProductForm({ onProductAdd }: ProductFormProps) {
           render={() => (
             <FormItem>
                 <FormLabel>Available Colors</FormLabel>
-                <div className="grid grid-cols-3 gap-2">
-                    {ALL_COLORS.map((item) => (
-                        <FormField
-                        key={item.value}
-                        control={form.control}
-                        name="colors"
-                        render={({ field }) => {
-                            return (
-                            <FormItem key={item.value} className="flex flex-row items-start space-x-3 space-y-0">
-                                <FormControl>
-                                <Checkbox
-                                    checked={field.value?.includes(item.value)}
-                                    onCheckedChange={(checked) => {
-                                    return checked
-                                        ? field.onChange([...(field.value || []), item.value])
-                                        : field.onChange(field.value?.filter((value) => value !== item.value));
-                                    }}
+                <Collapsible>
+                    <CollapsibleTrigger asChild>
+                        <Button variant="outline" className="w-full justify-between font-normal">
+                            <span>
+                                {form.watch('colors')?.length > 0
+                                    ? `${form.watch('colors').length} color(s) selected`
+                                    : "Select colors..."}
+                            </span>
+                            <ChevronsUpDown className="h-4 w-4 opacity-50" />
+                        </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="pt-4">
+                        <div className="grid grid-cols-3 gap-3">
+                            {ALL_COLORS.map((item) => (
+                                <FormField
+                                key={item.value}
+                                control={form.control}
+                                name="colors"
+                                render={({ field }) => {
+                                    return (
+                                    <FormItem key={item.value} className="flex flex-row items-center space-x-2 space-y-0">
+                                        <FormControl>
+                                        <Checkbox
+                                            checked={field.value?.includes(item.value)}
+                                            onCheckedChange={(checked) => {
+                                            return checked
+                                                ? field.onChange([...(field.value || []), item.value])
+                                                : field.onChange(field.value?.filter((value) => value !== item.value));
+                                            }}
+                                        />
+                                        </FormControl>
+                                        <FormLabel className="font-normal flex items-center gap-2 cursor-pointer">
+                                            <div className="w-4 h-4 rounded-full border" style={{ backgroundColor: item.value }} />
+                                            {item.name}
+                                        </FormLabel>
+                                    </FormItem>
+                                    );
+                                }}
                                 />
-                                </FormControl>
-                                <FormLabel className="font-normal flex items-center gap-2">
-                                    <div className="w-4 h-4 rounded-full border" style={{ backgroundColor: item.value }} />
-                                    {item.name}
-                                </FormLabel>
-                            </FormItem>
-                            );
-                        }}
-                        />
-                    ))}
-                </div>
+                            ))}
+                        </div>
+                    </CollapsibleContent>
+                </Collapsible>
               <FormMessage />
             </FormItem>
           )}
