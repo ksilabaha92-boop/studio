@@ -35,7 +35,7 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
       onClick={onFinish}
     >
       <motion.div
-        className="text-glow"
+        className="text-glow text-primary"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}

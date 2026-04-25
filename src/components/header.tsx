@@ -15,7 +15,7 @@ export function Header() {
           <button
             onClick={() => setLoginOpen(true)}
             aria-label="Open Admin Login"
-            className={cn("transition-transform duration-300 hover:scale-105")}
+            className={cn("transition-transform duration-300 hover:scale-105 text-primary")}
           >
             <TohfaLogo size="small" />
           </button>

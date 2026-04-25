@@ -57,7 +57,7 @@ export function TohfaLogo({ size = "small", className }: TohfaLogoProps) {
           fontFamily='"Playfair Display", serif'
           fontWeight="700"
           fontSize="52"
-          fill="hsl(var(--primary))"
+          fill="currentColor"
           filter="url(#ink-stamp-effect)"
           style={{ letterSpacing: '0.02em' }}
         >
