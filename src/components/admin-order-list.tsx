@@ -1,6 +1,6 @@
 'use client';
 import { useCollection, useFirebase, useMemoFirebase } from "@/firebase";
-import { collection, query, orderBy } from "firebase/firestore";
+import { collection, query, orderBy, Timestamp } from "firebase/firestore";
 import { type Order, type OrderItem } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
@@ -64,6 +64,24 @@ function OrderItems({ orderId }: { orderId: string }) {
     )
 }
 
+const toDate = (timestamp: Timestamp | Date | string): Date => {
+    if (timestamp instanceof Date) {
+      return timestamp;
+    }
+    if (typeof timestamp === 'string') {
+      return new Date(timestamp);
+    }
+    // This handles Firestore Timestamp
+    if (timestamp && typeof (timestamp as Timestamp).toDate === 'function') {
+      return (timestamp as Timestamp).toDate();
+    }
+    // Fallback for serialized timestamps
+    if (timestamp && typeof (timestamp as any).seconds === 'number') {
+      return new Timestamp((timestamp as any).seconds, (timestamp as any).nanoseconds || 0).toDate();
+    }
+    return new Date(); // Or return a specific invalid date
+  };
+
 export function AdminOrderList() {
   const { firestore } = useFirebase();
   const ordersQuery = useMemoFirebase(
@@ -103,7 +121,7 @@ export function AdminOrderList() {
                                             <p className="text-sm text-muted-foreground">{order.customerPhoneNumber}</p>
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-sm font-medium">{format(new Date(order.orderDate as string), 'PPpp')}</p>
+                                            <p className="text-sm font-medium">{order.orderDate ? format(toDate(order.orderDate), 'PPpp') : 'No date'}</p>
                                             <p className="text-xs text-muted-foreground">{order.status}</p>
                                         </div>
                                     </div>
