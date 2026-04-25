@@ -29,11 +29,13 @@ const ProductFormSchema = z.object({
   colors: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: 'You have to select at least one color.',
   }),
-  image: z.any(),
+  image: z.string().min(1, { message: 'Please upload an image.' }),
 });
 
+type ProductFormData = Omit<Product, 'id' | 'createdAt' | 'updatedAt'>;
+
 type ProductFormProps = {
-  onProductAdd: (product: Product) => void;
+  onProductAdd: (product: ProductFormData) => void;
 };
 
 export function ProductForm({ onProductAdd }: ProductFormProps) {
@@ -48,6 +50,7 @@ export function ProductForm({ onProductAdd }: ProductFormProps) {
       description: '',
       price: 0,
       colors: [],
+      image: '',
     },
   });
   
@@ -56,8 +59,9 @@ export function ProductForm({ onProductAdd }: ProductFormProps) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-        form.setValue('image', reader.result as string);
+        const result = reader.result as string;
+        setImagePreview(result);
+        form.setValue('image', result, { shouldValidate: true });
       };
       reader.readAsDataURL(file);
     }
@@ -66,27 +70,18 @@ export function ProductForm({ onProductAdd }: ProductFormProps) {
   async function onSubmit(values: z.infer<typeof ProductFormSchema>) {
     setIsSubmitting(true);
     
-    if (!values.image) {
-        toast({
-            variant: "destructive",
-            title: "Image required",
-            description: "Please upload an image for the product.",
-        });
-        setIsSubmitting(false);
-        return;
-    }
-
-    const newProduct: Product = {
-      id: `prod_${new Date().getTime()}`,
+    const newProductData: ProductFormData = {
       name: values.name,
       description: values.description,
       price: values.price,
       colors: values.colors,
-      image: values.image,
+      mainImageUrl: values.image,
       imageHint: `${values.name} pottery`,
+      available: true,
     };
 
-    onProductAdd(newProduct);
+    onProductAdd(newProductData);
+    
     toast({
       title: 'Product Added!',
       description: `${values.name} is now available in the store.`,
@@ -171,11 +166,18 @@ export function ProductForm({ onProductAdd }: ProductFormProps) {
             </FormItem>
           )}
         />
-        <FormItem>
-            <FormLabel>Product Image</FormLabel>
-            <FormControl><Input type="file" accept="image/*" onChange={handleImageChange} /></FormControl>
-            <FormMessage />
-        </FormItem>
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+                <FormLabel>Product Image</FormLabel>
+                <FormControl><Input type="file" accept="image/*" onChange={handleImageChange} /></FormControl>
+                <FormMessage />
+            </FormItem>
+          )}
+        />
+        
 
         {imagePreview && (
           <div className="w-full aspect-square relative rounded-md overflow-hidden border-2 border-dashed">

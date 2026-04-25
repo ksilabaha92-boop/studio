@@ -39,7 +39,7 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <TohfaLogo size="large" />
+        <TohfaLogo size="medium" />
       </motion.div>
       <motion.p
         initial={{ y: 20, opacity: 0 }}

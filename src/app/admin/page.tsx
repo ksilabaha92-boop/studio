@@ -1,26 +1,28 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminDashboard } from '@/components/admin-dashboard';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useUser } from '@/firebase';
 
 export default function AdminPage() {
   const router = useRouter();
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const { user, isUserLoading } = useUser();
 
   useEffect(() => {
-    const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
-    if (!isAdmin) {
+    if (!isUserLoading && !user) {
       router.push('/');
-    } else {
-      setIsAuthorized(true);
     }
-  }, [router]);
+  }, [user, isUserLoading, router]);
 
-  if (!isAuthorized) {
+  // For this simplified example, we consider any logged-in user an admin.
+  // In a real app, you would check for an admin role.
+  const isAuthorized = user && !user.isAnonymous;
+
+  if (isUserLoading || !isAuthorized) {
     return (
         <div className="flex flex-col min-h-screen">
             <Header />

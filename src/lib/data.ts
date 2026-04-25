@@ -1,5 +1,4 @@
 import type { Product } from './types';
-import { PlaceHolderImages } from './placeholder-images';
 
 export const ALL_COLORS = [
   { name: 'Clay Brown', value: '#6C4327' },

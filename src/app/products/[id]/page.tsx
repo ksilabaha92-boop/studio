@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useProducts } from '@/hooks/use-products';
+import { doc } from 'firebase/firestore';
+import { useDoc, useFirebase, useMemoFirebase } from '@/firebase';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -10,15 +12,33 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
+import { type Product } from '@/lib/types';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { OrderForm } from '@/components/order-form';
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const { id } = params;
-  const { products, isInitialized } = useProducts();
+  const { id } = params as { id: string };
+  const { firestore } = useFirebase();
+  const [isOrderSheetOpen, setOrderSheetOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
-  const product = isInitialized ? products.find((p) => p.id === id) : null;
 
-  if (!isInitialized) {
+  const productRef = useMemoFirebase(
+    () => (firestore && id ? doc(firestore, 'products', id) : null),
+    [firestore, id]
+  );
+
+  const { data: product, isLoading: isProductLoading } = useDoc<Product>(productRef);
+
+  if (isProductLoading) {
     return (
       <div className="flex flex-col min-h-screen">
         <Header />
@@ -56,6 +76,10 @@ export default function ProductDetailPage() {
     );
   }
 
+  const handleColorSelect = (color: string) => {
+    setSelectedColor(color);
+  };
+  
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -63,7 +87,7 @@ export default function ProductDetailPage() {
         <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
           <div className="aspect-square relative rounded-lg overflow-hidden shadow-xl">
             <Image
-              src={product.image}
+              src={product.mainImageUrl}
               alt={product.name}
               fill
               className="object-cover"
@@ -76,27 +100,46 @@ export default function ProductDetailPage() {
             <p className="text-lg text-foreground/80 leading-relaxed">{product.description}</p>
             
             <div>
-              <h3 className="font-bold text-foreground mb-3">Available Colors</h3>
+              <h3 className="font-bold text-foreground mb-3">Choose a Color</h3>
               <div className="flex items-center gap-3">
                 {product.colors.map((color, index) => (
-                  <span
+                  <button
                     key={index}
+                    onClick={() => handleColorSelect(color)}
                     className={cn(
-                      "h-8 w-8 rounded-full border-2",
-                      color.toLowerCase() === '#f9f4f0' ? 'border-border' : 'border-transparent'
+                      "h-10 w-10 rounded-full border-2 transition-transform duration-200",
+                      selectedColor === color ? 'border-primary scale-110' : 'border-transparent',
+                       color.toLowerCase() === '#f9f4f0' ? 'border-border' : 'border-transparent'
                     )}
                     style={{ backgroundColor: color }}
                     title={color}
+                    aria-label={`Select color ${color}`}
                   />
                 ))}
               </div>
             </div>
 
-            <Button size="lg" className="w-full btn-clay text-lg" disabled>
-              <ShoppingCart className="mr-2 h-5 w-5" />
-              Add to Cart
-            </Button>
-            <p className="text-xs text-center text-muted-foreground">Online store coming soon!</p>
+            <Sheet open={isOrderSheetOpen} onOpenChange={setOrderSheetOpen}>
+              <SheetTrigger asChild>
+                <Button size="lg" className="w-full btn-clay text-lg" disabled={!selectedColor}>
+                  <ShoppingCart className="mr-2 h-5 w-5" />
+                  {selectedColor ? 'Place Order' : 'Select a color first'}
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle className="font-headline text-3xl text-primary">Confirm Your Order</SheetTitle>
+                  <SheetDescription>
+                    You're ordering: <span className="font-bold text-foreground">{product.name}</span>
+                  </SheetDescription>
+                </SheetHeader>
+                <OrderForm 
+                  product={product} 
+                  selectedColor={selectedColor!}
+                  onOrderPlaced={() => setOrderSheetOpen(false)}
+                />
+              </SheetContent>
+            </Sheet>
 
           </div>
         </div>

@@ -1,52 +1,68 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { type Product } from '@/lib/types';
-import { initialProducts } from '@/lib/data';
-
-const STORAGE_KEY = 'tohfafino-products';
+import { useFirebase, useCollection, useMemoFirebase } from '@/firebase';
+import { collection, doc, serverTimestamp } from 'firebase/firestore';
+import { 
+  addDocumentNonBlocking, 
+  deleteDocumentNonBlocking, 
+  setDocumentNonBlocking 
+} from '@/firebase/non-blocking-updates';
 
 export function useProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const { firestore } = useFirebase();
 
-  useEffect(() => {
-    try {
-      const item = window.localStorage.getItem(STORAGE_KEY);
-      const storedProducts = item ? JSON.parse(item) : initialProducts;
-      setProducts(storedProducts);
-    } catch (error) {
-      console.warn(`Error reading localStorage key “${STORAGE_KEY}”:`, error);
-      setProducts(initialProducts);
-    } finally {
-      setIsInitialized(true);
-    }
-  }, []);
+  const productsCollectionRef = useMemoFirebase(
+    () => (firestore ? collection(firestore, 'products') : null),
+    [firestore]
+  );
 
-  useEffect(() => {
-    if (isInitialized) {
-      try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-      } catch (error) {
-        console.warn(`Error setting localStorage key “${STORAGE_KEY}”:`, error);
-      }
-    }
-  }, [products, isInitialized]);
+  const { data: products, isLoading, error } = useCollection<Product>(productsCollectionRef);
 
-  const addProduct = useCallback((newProduct: Product) => {
-    setProducts((prevProducts) => [newProduct, ...prevProducts]);
-  }, []);
+  const addProduct = useCallback((newProductData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>) => {
+    if (!productsCollectionRef) return;
+    
+    // Create a new document with an auto-generated ID.
+    const newDocRef = doc(collection(firestore!, 'products'));
+    
+    const productWithTimestamp: Omit<Product, 'id'> = {
+      ...newProductData,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+
+    // Use setDocumentNonBlocking with the new reference to ensure the ID is included.
+    setDocumentNonBlocking(newDocRef, { ...productWithTimestamp, id: newDocRef.id }, { merge: false });
+
+  }, [productsCollectionRef, firestore]);
 
   const removeProduct = useCallback((productId: string) => {
-    setProducts((prevProducts) => prevProducts.filter((p) => p.id !== productId));
-  }, []);
+    if (!firestore) return;
+    const productDocRef = doc(firestore, 'products', productId);
+    deleteDocumentNonBlocking(productDocRef);
+  }, [firestore]);
   
   const updateProduct = useCallback((updatedProduct: Product) => {
-    setProducts((prevProducts) => 
-      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-  }, []);
+    if (!firestore || !updatedProduct.id) return;
+    const productDocRef = doc(firestore, 'products', updatedProduct.id);
+    const { id, ...dataToUpdate } = updatedProduct;
+    const updateData = {
+      ...dataToUpdate,
+      updatedAt: serverTimestamp(),
+    };
+    setDocumentNonBlocking(productDocRef, updateData, { merge: true });
+  }, [firestore]);
 
+  if (error) {
+    console.error("Error fetching products:", error);
+  }
 
-  return { products, addProduct, removeProduct, updateProduct, isInitialized };
+  return { 
+    products: products || [], 
+    addProduct, 
+    removeProduct, 
+    updateProduct, 
+    isInitialized: !isLoading 
+  };
 }

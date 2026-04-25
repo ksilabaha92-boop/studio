@@ -24,8 +24,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { KeyRound } from 'lucide-react';
+import { useAuth } from '@/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginSchema = z.object({
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
   password: z.string().min(1, { message: 'Password is required' }),
 });
 
@@ -34,43 +37,41 @@ type LoginDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-// This should be an environment variable in a real app
-const ADMIN_PASSWORD = 'TohfafinoAdmin2024';
-
 export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
   const router = useRouter();
+  const auth = useAuth();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
+      email: '',
       password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof LoginSchema>) {
+  async function onSubmit(values: z.infer<typeof LoginSchema>) {
     setIsSubmitting(true);
-    // Simulate network delay
-    setTimeout(() => {
-      if (values.password === ADMIN_PASSWORD) {
-        sessionStorage.setItem('isAdmin', 'true');
-        toast({
-          title: 'Success',
-          description: 'Welcome, Admin!',
-        });
-        onOpenChange(false);
-        router.push('/admin');
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Authentication Failed',
-          description: 'The password you entered is incorrect.',
-        });
-        form.setError('password', { message: 'Incorrect password' });
-      }
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+      toast({
+        title: 'Success',
+        description: 'Welcome, Admin!',
+      });
+      onOpenChange(false);
+      router.push('/admin');
+    } catch (error: any) {
+      console.error('Admin login failed:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Authentication Failed',
+        description: 'The email or password you entered is incorrect.',
+      });
+      form.setError('password', { message: 'Incorrect email or password' });
+    } finally {
       setIsSubmitting(false);
-    }, 500);
+    }
   }
 
   return (
@@ -81,11 +82,28 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
             <KeyRound className="w-6 h-6" /> Admin Access
           </DialogTitle>
           <DialogDescription>
-            Enter the password to access the site management panel.
+            Enter your credentials to access the site management panel.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="admin@example.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="password"
