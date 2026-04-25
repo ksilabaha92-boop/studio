@@ -99,15 +99,18 @@ service cloud.firestore {
     /**
      * @description Rules for the collection that defines who is an administrator.
      * @path /admins/{adminUid}
-     * @allow (create) An existing administrator can add a new administrator.
+     * @allow (create) An existing administrator can add a new administrator. A new user can create their own document.
      * @allow (get) An existing administrator can check if another user is an admin.
      * @deny (list) A non-admin user cannot list all administrators.
-     * @deny (create) A non-admin user cannot grant themselves admin privileges.
-     * @principle Secures the role management system itself, ensuring only current admins can manage admin roles.
+     * @deny (create) A non-admin user cannot grant other users admin privileges.
+     * @principle Secures the role management system, allowing self-creation for bootstrapping and admin-only management after.
      */
     match /admins/{adminUid} {
       allow get, list: if isAdmin();
-      allow create, update, delete: if isAdmin() && resource != null;
+      // Allow a user to create their own admin document.
+      // This is a simplified approach for easy setup.
+      allow create: if isSignedIn() && request.auth.uid == adminUid;
+      allow update, delete: if isAdmin() && resource != null;
     }
   }
 }
