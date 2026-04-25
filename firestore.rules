@@ -1,0 +1,113 @@
+/**
+ * This ruleset enforces a security model for the Tohfa Atelier e-commerce application.
+ *
+ * Core Philosophy:
+ * The security model is built on the principle of structural segregation. Publicly accessible data (like products)
+ * is stored in a separate collection from private, administrator-managed data (like orders and admin roles).
+ * This allows for simple, performant, and highly secure query rules. Anonymous users are permitted to create
+ * orders, but all management and viewing of sensitive data is restricted to a small group of administrators.
+ *
+ * Data Structure:
+ * - /products/{productId}: A top-level collection containing all product information, intended for public read access.
+ * - /orders/{orderId}: A top-level collection for customer orders. Anyone can write to it, but only admins can read it.
+ * - /orders/{orderId}/orderItems/{orderItemId}: A subcollection detailing the items within each order, inheriting the
+ *   security of its parent order.
+ * - /admins/{adminUid}: A dedicated collection whose document IDs are the UIDs of administrator users. The existence
+ *   of a document here grants a user admin privileges across the application.
+ *
+ * Key Security Decisions:
+ * - Admin Roles via DBAC: Administrator privileges are determined by checking for the existence of a document in the
+ *   `/admins/{request.auth.uid}` path. This is a fast, reliable, and easily auditable method for role management.
+ * - Public Product Catalog: The `/products` collection is world-readable to allow any visitor to browse the catalog.
+ *   All write operations are restricted to administrators.
+ * - Write-Only Orders for Customers: Any user, including anonymous ones, can create documents in the `/orders`
+ *   collection to place an order. However, they cannot read, update, or delete orders once placed. This creates a secure
+ *   "drop-box" for new orders that only administrators can access.
+ * - No User Data Collection: There is no top-level `/users` collection. The system relies on anonymous authentication for
+ *   order placement and a separate `/admins` collection for privileged users, simplifying the security model.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper Functions
+
+    /**
+     * Checks if the current user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the currently authenticated user is an administrator.
+     * Admin status is granted by the existence of a document in the /admins collection
+     * where the document ID matches the user's UID.
+     */
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+
+    /**
+     * @description Rules for the collection of publicly listed pottery products.
+     * @path /products/{productId}
+     * @allow (get) Any user, signed-in or anonymous, can read a specific product.
+     * @allow (list) Any user, signed-in or anonymous, can list all products.
+     * @allow (create) An administrator can create a new product document.
+     * @deny (create) An anonymous or non-admin user cannot create a new product.
+     * @deny (update) A non-admin user cannot modify an existing product.
+     * @principle Public read access for catalog browsing, with role-based writes for content management.
+     */
+    match /products/{productId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && request.resource.data.id == productId;
+      allow update, delete: if isAdmin() && resource != null;
+    }
+
+
+    /**
+     * @description Rules for the collection of customer orders. Orders act as a secure "drop-box".
+     * @path /orders/{orderId}
+     * @allow (create) Any user, including anonymous users, can create a new order.
+     * @allow (get) An administrator can read a specific order's details.
+     * @deny (get) A regular user or the original anonymous creator cannot read the order back.
+     * @deny (list) Listing all orders is forbidden for non-administrators.
+     * @principle Allows public write access for order submission while restricting all read/manage operations to administrators.
+     */
+    match /orders/{orderId} {
+      allow get, list: if isAdmin();
+      allow create: if request.resource.data.id == orderId;
+      allow update, delete: if isAdmin() && resource != null;
+
+      /**
+       * @description Rules for the items within a customer order.
+       * @path /orders/{orderId}/orderItems/{orderItemId}
+       * @allow (create) Any user can create order items as part of submitting a new order.
+       * @allow (get) An administrator can read the items of a specific order.
+       * @deny (get) A non-admin user cannot read order items.
+       * @principle Inherits security from the parent order, allowing creation but restricting all subsequent access to admins.
+       */
+      match /orderItems/{orderItemId} {
+        allow get, list: if isAdmin();
+        allow create: if request.resource.data.id == orderItemId && request.resource.data.orderId == orderId;
+        allow update, delete: if isAdmin() && resource != null;
+      }
+    }
+
+
+    /**
+     * @description Rules for the collection that defines who is an administrator.
+     * @path /admins/{adminUid}
+     * @allow (create) An existing administrator can add a new administrator.
+     * @allow (get) An existing administrator can check if another user is an admin.
+     * @deny (list) A non-admin user cannot list all administrators.
+     * @deny (create) A non-admin user cannot grant themselves admin privileges.
+     * @principle Secures the role management system itself, ensuring only current admins can manage admin roles.
+     */
+    match /admins/{adminUid} {
+      allow get, list: if isAdmin();
+      allow create, update, delete: if isAdmin() && resource != null;
+    }
+  }
+}

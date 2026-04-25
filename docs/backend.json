@@ -1,0 +1,231 @@
+{
+  "entities": {
+    "Product": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Product",
+      "type": "object",
+      "description": "Represents a single pottery product available for sale in the Tohfa Atelier. This entity stores all details necessary for displaying the product to customers and managing inventory.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Product entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the pottery product, e.g., 'Handcrafted Clay Bowl'."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed descriptive paragraph about the product, highlighting its craftsmanship, materials, and unique features."
+        },
+        "priceTND": {
+          "type": "number",
+          "description": "The price of the product in Tunisian Dinars (TND)."
+        },
+        "mainImageUrl": {
+          "type": "string",
+          "description": "URL to the primary image of the product, used for display in galleries and detail pages.",
+          "format": "uri"
+        },
+        "additionalImageUrls": {
+          "type": "array",
+          "description": "An array of URLs to additional images of the product, showing different angles, uses, or detailed views.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "colorVariants": {
+          "type": "array",
+          "description": "A list of available color variants for the product, represented as descriptive strings (e.g., 'beige', 'caramel', 'chocolate brown').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "available": {
+          "type": "boolean",
+          "description": "Indicates whether the product is currently available for purchase by customers."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the product was first added to the system, useful for tracking and ordering.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp of the last update to the product's information or status.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "priceTND",
+        "mainImageUrl",
+        "colorVariants",
+        "available",
+        "createdAt"
+      ]
+    },
+    "Order": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Order",
+      "type": "object",
+      "description": "Represents a customer's purchase request for one or more products from Tohfa Atelier. This captures customer details and the overall state of the transaction.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Order entity."
+        },
+        "customerFullName": {
+          "type": "string",
+          "description": "The full name of the customer placing the order."
+        },
+        "customerPhoneNumber": {
+          "type": "string",
+          "description": "The contact phone number of the customer for order communication."
+        },
+        "customerAddress": {
+          "type": "string",
+          "description": "The full shipping address provided by the customer for delivery."
+        },
+        "orderDate": {
+          "type": "string",
+          "description": "Timestamp when the order was placed by the customer.",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the order (e.g., 'Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled')."
+        }
+      },
+      "required": [
+        "id",
+        "customerFullName",
+        "customerPhoneNumber",
+        "customerAddress",
+        "orderDate",
+        "status"
+      ]
+    },
+    "OrderItem": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "OrderItem",
+      "type": "object",
+      "description": "Represents a specific product and its chosen details as part of a larger customer order. This entity handles the many-to-many relationship between orders and products.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the OrderItem entity."
+        },
+        "orderId": {
+          "type": "string",
+          "description": "Reference to the Order this item belongs to. (Relationship: Order 1:N OrderItem)"
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to the Product being ordered. (Relationship: Product 1:N OrderItem)"
+        },
+        "quantity": {
+          "type": "number",
+          "description": "The quantity of this specific product item included in the order."
+        },
+        "selectedColor": {
+          "type": "string",
+          "description": "The specific color variant chosen by the customer for this particular product item in the order."
+        },
+        "unitPriceTND": {
+          "type": "number",
+          "description": "The price of a single unit of the product in Tunisian Dinars (TND) at the time the order was placed. This helps record the exact price paid, even if product prices change later."
+        }
+      },
+      "required": [
+        "id",
+        "orderId",
+        "productId",
+        "quantity",
+        "selectedColor",
+        "unitPriceTND"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/products/{productId}",
+        "definition": {
+          "entityName": "Product",
+          "schema": {
+            "$ref": "#/backend/entities/Product"
+          },
+          "description": "Publicly visible list of all available pottery products. Anyone can read product details. Only authenticated administrators can create, update, or delete products. This collection supports QAPs for public listing.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "Unique identifier for a specific product."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/orders/{orderId}",
+        "definition": {
+          "entityName": "Order",
+          "schema": {
+            "$ref": "#/backend/entities/Order"
+          },
+          "description": "Stores details of customer orders. Anonymous users can create new order documents. Only authenticated administrators can read, update, or delete these orders. This collection supports QAPs for admin listing.",
+          "params": [
+            {
+              "name": "orderId",
+              "description": "Unique identifier for a specific customer order."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/orders/{orderId}/orderItems/{orderItemId}",
+        "definition": {
+          "entityName": "OrderItem",
+          "schema": {
+            "$ref": "#/backend/entities/OrderItem"
+          },
+          "description": "Details of individual products within a specific order. Documents are created when an order is placed. Only authenticated administrators can read, update, or delete. Security is inherited from the parent order.",
+          "params": [
+            {
+              "name": "orderId",
+              "description": "The ID of the parent order."
+            },
+            {
+              "name": "orderItemId",
+              "description": "Unique identifier for a specific item within an order."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/admins/{adminUid}",
+        "definition": {
+          "entityName": "admin",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Contains documents whose IDs are the UIDs of users with administrator privileges. Used for Database-backed Access Control (DBAC) to grant admin roles. Only authenticated administrators should be able to manage this collection.",
+          "params": [
+            {
+              "name": "adminUid",
+              "description": "The Firebase Authentication UID of a user with administrator privileges."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure for Tohfa Atelier prioritizes security, scalability, and debuggability in line with the core design principles. The primary goal is to ensure Authorization Independence and support Query-Ability through structural segregation and explicit access models.The structure is organized as follows:1.  \"/products/{productId}\": This collection stores all publicly viewable pottery products. It adheres to the **Structural Segregation** principle by housing only documents that share the same security posture: public read access for all users (including anonymous) and restricted write access for authenticated administrators. This design perfectly supports **QAPs (Rules are not Filters)** for list operations; a rule allowing 'list' if 'true' for read operations on this collection is efficient and secure, as all documents are intended for public display. Write operations (create, update, delete) will be secured by checking for admin privileges.2.  \"/orders/{orderId}\": This collection captures all customer orders. It demonstrates **Structural Segregation** as all documents here represent a placed order and are intended for administrative review. Anonymous customers can create documents in this collection (to place an order), but only authenticated administrators can read, update, or delete these orders. This setup supports **QAPs** for admin listing, as the security rule will check the `request.auth.uid` against the `/admins` collection, not filter the data content.3.  \"/orders/{orderId}/orderItems/{orderItemId}\": This subcollection stores the specific items associated with a parent order. By nesting `OrderItem`s under `Order`s, we utilize **Hierarchical Paths for User-Owned Data** (in this case, admin-owned orders). The security of `OrderItem` documents inherently follows the security of their parent `Order` document, making rules simpler and more robust. There's no need for additional authorization denormalization here as the parent-child relationship itself clearly defines the access scope, which is restricted to admins.4.  \"/admins/{adminUid}\": This top-level collection implements the **DBAC (No Custom Claims)** principle for global roles. Each document in this collection has an `id` that matches the `uid` of an administrator. The existence of a document at `/admins/$(request.auth.uid)` is a direct, atomic check for admin privileges. This completely eliminates hierarchical authorization dependencies (`get()`) for role checks, fulfilling the **Authorization Independence** mandate. It's highly debuggable and efficient.For **Authorization Independence**, the key is the separation of public products and private orders/admin roles. Product access doesn't depend on order details, and vice versa. Admin authentication is a direct `exists()` check to the `/admins` collection, ensuring it's an atomic operation. For **QAPs**, '/products' allows simple `list: true` for public visibility, while '/orders' allows `list` only if the user is an admin (verified by `/admins` collection), avoiding client-side filtering and ensuring secure data retrieval."
+  }
+}
