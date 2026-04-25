@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import type { Product } from '@/lib/types';
 import Link from 'next/link';
+import { Badge } from './ui/badge';
 
 type ProductCardProps = {
   product: Product;
@@ -10,6 +11,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/products/${product.id}`} className="group block overflow-hidden rounded-lg">
       <div className="aspect-[4/5] relative bg-card rounded-lg overflow-hidden">
+        {product.onSale && <Badge variant="destructive" className="absolute top-3 right-3 z-10">SALE</Badge>}
         <Image
           src={product.mainImageUrl}
           alt={product.name}
@@ -21,7 +23,14 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
       <div className="pt-4 text-center">
         <h3 className="font-headline text-xl text-foreground transition-colors group-hover:text-primary">{product.name}</h3>
-        <p className="mt-1 font-body text-base font-medium text-primary">{product.price} TND</p>
+        {product.onSale && product.discountPrice ? (
+            <p className="mt-1 font-body text-base font-medium">
+                <span className="text-muted-foreground line-through mr-2">{product.price} TND</span>
+                <span className="text-primary font-bold">{product.discountPrice} TND</span>
+            </p>
+        ) : (
+            <p className="mt-1 font-body text-base font-medium text-primary">{product.price} TND</p>
+        )}
       </div>
     </Link>
   );

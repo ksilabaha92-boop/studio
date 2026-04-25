@@ -18,9 +18,17 @@
           "type": "string",
           "description": "A detailed descriptive paragraph about the product, highlighting its craftsmanship, materials, and unique features."
         },
-        "priceTND": {
+        "price": {
           "type": "number",
           "description": "The price of the product in Tunisian Dinars (TND)."
+        },
+        "onSale": {
+            "type": "boolean",
+            "description": "Indicates if the product is currently on sale."
+        },
+        "discountPrice": {
+            "type": "number",
+            "description": "The discounted price of the product in Tunisian Dinars (TND), if on sale."
         },
         "mainImageUrl": {
           "type": "string",
@@ -34,7 +42,7 @@
             "type": "string"
           }
         },
-        "colorVariants": {
+        "colors": {
           "type": "array",
           "description": "A list of available color variants for the product, represented as descriptive strings (e.g., 'beige', 'caramel', 'chocolate brown').",
           "items": {
@@ -60,9 +68,9 @@
         "id",
         "name",
         "description",
-        "priceTND",
+        "price",
         "mainImageUrl",
-        "colorVariants",
+        "colors",
         "available",
         "createdAt"
       ]
@@ -134,7 +142,7 @@
           "type": "string",
           "description": "The specific color variant chosen by the customer for this particular product item in the order."
         },
-        "unitPriceTND": {
+        "unitPrice": {
           "type": "number",
           "description": "The price of a single unit of the product in Tunisian Dinars (TND) at the time the order was placed. This helps record the exact price paid, even if product prices change later."
         }
@@ -145,7 +153,7 @@
         "productId",
         "quantity",
         "selectedColor",
-        "unitPriceTND"
+        "unitPrice"
       ]
     }
   },

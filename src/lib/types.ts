@@ -5,6 +5,8 @@ export type Product = {
   name: string;
   description: string;
   price: number;
+  onSale?: boolean;
+  discountPrice?: number;
   colors: string[];
   mainImageUrl: string;
   imageHint: string;

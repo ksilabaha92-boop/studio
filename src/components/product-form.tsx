@@ -23,6 +23,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
+import { Switch } from './ui/switch';
 
 const ProductFormSchema = z.object({
   name: z.string().min(3, { message: 'Name must be at least 3 characters' }),
@@ -32,7 +33,26 @@ const ProductFormSchema = z.object({
     message: 'You have to select at least one color.',
   }),
   image: z.string().min(1, { message: 'Please upload an image.' }),
+  onSale: z.boolean().default(false),
+  discountPrice: z.coerce.number().optional(),
+}).refine(data => {
+    if (data.onSale && (!data.discountPrice || data.discountPrice <= 0)) {
+        return false;
+    }
+    return true;
+}, {
+    message: "Discount price must be set and positive when item is on sale.",
+    path: ["discountPrice"],
+}).refine(data => {
+    if (data.onSale && data.discountPrice && data.discountPrice >= data.price) {
+        return false;
+    }
+    return true;
+}, {
+    message: "Discount price must be less than the original price.",
+    path: ["discountPrice"],
 });
+
 
 type ProductFormData = Omit<Product, 'id' | 'createdAt' | 'updatedAt'>;
 
@@ -53,6 +73,8 @@ export function ProductForm({ onProductAdd }: ProductFormProps) {
       price: 0,
       colors: [],
       image: '',
+      onSale: false,
+      discountPrice: 0,
     },
   });
   
@@ -76,6 +98,8 @@ export function ProductForm({ onProductAdd }: ProductFormProps) {
       name: values.name,
       description: values.description,
       price: values.price,
+      onSale: values.onSale,
+      discountPrice: values.onSale ? values.discountPrice : undefined,
       colors: values.colors,
       mainImageUrl: values.image,
       imageHint: `${values.name} pottery`,
@@ -124,11 +148,56 @@ export function ProductForm({ onProductAdd }: ProductFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Price (TND)</FormLabel>
-              <FormControl><Input type="number" placeholder="95" {...field} /></FormControl>
+              <FormControl><Input type="number" step="0.1" placeholder="95" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        <div className="space-y-4 rounded-md border p-4 bg-secondary/20">
+          <FormField
+            control={form.control}
+            name="onSale"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between">
+                <div className="space-y-0.5">
+                  <FormLabel>Put on Sale</FormLabel>
+                  <FormDescription>
+                    Enable to set a discount price.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          {form.watch('onSale') && (
+            <FormField
+              control={form.control}
+              name="discountPrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Discount Price (TND)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      step="0.1"
+                      placeholder="75"
+                      {...field}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+        </div>
+
         <FormField
           control={form.control}
           name="colors"

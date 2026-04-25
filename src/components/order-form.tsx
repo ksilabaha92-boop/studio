@@ -73,13 +73,15 @@ export function OrderForm({ product, selectedColor, onOrderPlaced }: OrderFormPr
 
         // 2. Create a new orderItem sub-document
         const orderItemRef = doc(collection(firestore, 'orders', orderRef.id, 'orderItems'));
+        const pricePaid = product.onSale && product.discountPrice ? product.discountPrice : product.price;
+
         batch.set(orderItemRef, {
             id: orderItemRef.id,
             orderId: orderRef.id,
             productId: product.id,
             quantity: 1, // Assuming quantity is always 1 for this UI
             selectedColor: selectedColor,
-            unitPrice: product.price,
+            unitPrice: pricePaid,
         });
 
         await batch.commit();

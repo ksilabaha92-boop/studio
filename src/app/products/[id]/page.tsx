@@ -10,7 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, BadgePercent } from 'lucide-react';
 import Link from 'next/link';
 import { type Product } from '@/lib/types';
 import {
@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/sheet';
 import { OrderForm } from '@/components/order-form';
 import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -87,6 +88,12 @@ export default function ProductDetailPage() {
       <main className="flex-grow container mx-auto px-4 py-12 md:py-20">
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
           <div className="aspect-square relative rounded-lg overflow-hidden bg-card element-glow">
+            {product.onSale && (
+                <Badge variant="destructive" className="absolute top-4 right-4 z-10 text-base py-1 px-3">
+                    <BadgePercent className="mr-2 h-5 w-5" />
+                    SALE
+                </Badge>
+            )}
             <Image
               src={product.mainImageUrl}
               alt={product.name}
@@ -98,7 +105,14 @@ export default function ProductDetailPage() {
           <div className="space-y-8">
             <div>
               <h1 className="font-headline text-4xl md:text-5xl text-foreground text-glow">{product.name}</h1>
-              <p className="font-body font-medium text-3xl text-primary mt-2">{product.price} TND</p>
+              {product.onSale && product.discountPrice ? (
+                <div className="flex items-baseline gap-4 mt-2">
+                    <p className="font-body font-medium text-3xl text-primary">{product.discountPrice} TND</p>
+                    <p className="font-body font-medium text-xl text-muted-foreground line-through">{product.price} TND</p>
+                </div>
+              ) : (
+                <p className="font-body font-medium text-3xl text-primary mt-2">{product.price} TND</p>
+              )}
             </div>
             
             <Separator />

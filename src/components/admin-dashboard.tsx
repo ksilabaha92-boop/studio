@@ -9,6 +9,7 @@ import { Trash2 } from 'lucide-react';
 import { Separator } from './ui/separator';
 import { AdminOrderList } from './admin-order-list';
 import type { Product } from '@/lib/types';
+import { Badge } from './ui/badge';
 
 export function AdminDashboard() {
   const { products, addProduct, removeProduct, isInitialized } = useProducts();
@@ -41,7 +42,15 @@ export function AdminDashboard() {
                     />
                     <div className="flex-grow">
                       <h3 className="font-bold">{product.name}</h3>
-                      <p className="text-sm text-muted-foreground">{product.price} TND</p>
+                      {product.onSale && product.discountPrice ? (
+                        <p className="text-sm">
+                          <Badge variant="destructive" className="mr-2">SALE</Badge>
+                          <span className="text-muted-foreground line-through">{product.price} TND</span>
+                          <span className="text-primary font-semibold ml-2">{product.discountPrice} TND</span>
+                        </p>
+                      ) : (
+                        <p className="text-sm text-muted-foreground">{product.price} TND</p>
+                      )}
                     </div>
                     <Button
                       variant="ghost"
