@@ -13,13 +13,9 @@ export default function Home() {
 
   useEffect(() => {
     setIsClient(true);
-    if (sessionStorage.getItem('splashShown')) {
-      setShowSplash(false);
-    }
   }, []);
 
   const handleSplashFinish = () => {
-    sessionStorage.setItem('splashShown', 'true');
     setShowSplash(false);
   };
 
