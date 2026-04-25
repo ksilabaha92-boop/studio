@@ -31,6 +31,9 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-16">
+        <p className="text-center font-cursive text-2xl text-foreground/80 mb-12">
+          حيث تتحول البساطة إلى تحفة تُروى بتفاصيلها.
+        </p>
         <ProductGallery />
         <BrandNarrative />
       </main>
