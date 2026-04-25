@@ -3,6 +3,7 @@
 import { TohfaLogo } from './tohfa-logo';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { AnimatedBackground } from './animated-background';
 
 // Fake Framer motion for build
 const FAKE_MOTION = {
@@ -31,25 +32,28 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-50 flex h-screen w-screen cursor-pointer flex-col items-center justify-center bg-background"
+      className="fixed inset-0 z-50 flex h-screen w-screen cursor-pointer flex-col items-center justify-center"
       onClick={onFinish}
     >
-      <motion.div
-        className="text-glow text-primary"
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <TohfaLogo size="medium" />
-      </motion.div>
-      <motion.p
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
-        className="mt-8 font-body text-lg text-muted-foreground"
-      >
-        Click to enter
-      </motion.p>
+      <AnimatedBackground />
+      <div className="relative z-10 flex flex-col items-center">
+        <motion.div
+          className="text-glow text-primary"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <TohfaLogo size="medium" />
+        </motion.div>
+        <motion.p
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
+          className="mt-8 font-body text-lg text-muted-foreground"
+        >
+          Click to enter
+        </motion.p>
+      </div>
     </motion.div>
   );
 }
