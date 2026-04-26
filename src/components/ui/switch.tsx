@@ -15,6 +15,15 @@ const Switch = React.forwardRef<
       className
     )}
     {...props}
+    onCheckedChange={(checked) => {
+      // The error "flushSync was called from inside a lifecycle method" can occur when
+      // a state update is triggered synchronously during a render. This is common with
+      // libraries like react-hook-form. Wrapping the call in a setTimeout defers the
+      // update, breaking the synchronous chain and resolving the issue.
+      setTimeout(() => {
+        props.onCheckedChange?.(checked);
+      });
+    }}
     ref={ref}
   >
     <SwitchPrimitives.Thumb
