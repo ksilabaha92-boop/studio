@@ -1,4 +1,4 @@
-import { Instagram, Phone } from 'lucide-react';
+import { Instagram, Phone, Truck } from 'lucide-react';
 import { Button } from './ui/button';
 import Link from 'next/link';
 import { TohfaLogo } from './tohfa-logo';
@@ -36,8 +36,13 @@ export function Footer() {
           </Button>
         </div>
 
+        <div className="flex items-center justify-center gap-2 mb-8 text-sm text-background/80">
+          <Truck className="h-5 w-5" />
+          <span>Free delivery within Kelibia</span>
+        </div>
+
         <p className="font-body text-sm text-background/60">© {new Date().getFullYear()} Tohfafino. All rights reserved.</p>
-        <p className="font-cursive text-2xl text-background/60 mt-4">By Aziz</p>
+        <p className="font-cursive text-4xl text-background/60 mt-4">By Aziz</p>
       </div>
     </footer>
   );
