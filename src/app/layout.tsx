@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AnimatedBackground } from '@/components/animated-background';
 import { cn } from '@/lib/utils';
 import { FirebaseClientProvider } from '@/firebase';
+import { CartProvider } from '@/context/cart-context';
 
 export const metadata: Metadata = {
   title: 'Tohfafino',
@@ -24,11 +25,13 @@ export default function RootLayout({
       </head>
       <body className={cn('font-body antialiased', 'min-h-screen bg-background')}>
         <FirebaseClientProvider>
-          <AnimatedBackground />
-          <div className="relative z-10">
-            {children}
-          </div>
-          <Toaster />
+          <CartProvider>
+            <AnimatedBackground />
+            <div className="relative z-10">
+              {children}
+            </div>
+            <Toaster />
+          </CartProvider>
         </FirebaseClientProvider>
       </body>
     </html>

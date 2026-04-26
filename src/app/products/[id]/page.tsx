@@ -4,34 +4,28 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { doc } from 'firebase/firestore';
 import { useDoc, useFirebase, useMemoFirebase } from '@/firebase';
+import { useCart } from '@/context/cart-context';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ShoppingCart, BadgePercent, Truck } from 'lucide-react';
+import { ShoppingCart, BadgePercent, Truck, Minus, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { type Product } from '@/lib/types';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
-import { OrderForm } from '@/components/order-form';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 
 export default function ProductDetailPage() {
   const params = useParams();
   const { id } = params as { id: string };
   const { firestore } = useFirebase();
-  const [isOrderSheetOpen, setOrderSheetOpen] = useState(false);
+  const { addToCart } = useCart();
+  
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
-
+  const [quantity, setQuantity] = useState(1);
 
   const productRef = useMemoFirebase(
     () => (firestore && id ? doc(firestore, 'products', id) : null),
@@ -39,6 +33,25 @@ export default function ProductDetailPage() {
   );
 
   const { data: product, isLoading: isProductLoading } = useDoc<Product>(productRef);
+
+  const handleAddToCart = () => {
+    if (!product || !selectedColor) return;
+
+    const priceToUse = product.onSale && product.discountPrice ? product.discountPrice : product.price;
+
+    addToCart({
+      productId: product.id,
+      name: product.name,
+      unitPrice: priceToUse,
+      mainImageUrl: product.mainImageUrl,
+      imageHint: product.imageHint,
+      selectedColor: selectedColor,
+    }, quantity);
+  };
+  
+  const handleQuantityChange = (amount: number) => {
+    setQuantity(prev => Math.max(1, prev + amount));
+  }
 
   if (isProductLoading) {
     return (
@@ -102,7 +115,7 @@ export default function ProductDetailPage() {
               data-ai-hint={product.imageHint}
             />
           </div>
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div>
               <h1 className="font-headline text-4xl text-foreground text-glow">{product.name}</h1>
               {product.onSale && product.discountPrice ? (
@@ -138,27 +151,28 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            <Sheet open={isOrderSheetOpen} onOpenChange={setOrderSheetOpen}>
-              <SheetTrigger asChild>
-                <Button size="lg" className="w-full text-lg py-6 bg-primary text-primary-foreground hover:bg-primary/90 btn-clay" disabled={!selectedColor}>
-                  <ShoppingCart className="mr-3 h-5 w-5" />
-                  {selectedColor ? 'Place Order' : 'Select a color first'}
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle className="font-headline text-3xl text-primary">Confirm Your Order</SheetTitle>
-                  <SheetDescription>
-                    You're ordering: <span className="font-bold text-foreground">{product.name}</span>
-                  </SheetDescription>
-                </SheetHeader>
-                <OrderForm 
-                  product={product} 
-                  selectedColor={selectedColor!}
-                  onOrderPlaced={() => setOrderSheetOpen(false)}
-                />
-              </SheetContent>
-            </Sheet>
+            <div>
+                <h3 className="font-body font-medium text-foreground mb-3">Quantity</h3>
+                <div className="flex items-center gap-2">
+                    <Button variant="outline" size="icon" onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1}>
+                        <Minus className="h-4 w-4" />
+                    </Button>
+                    <Input 
+                        type="number" 
+                        className="w-16 text-center" 
+                        value={quantity}
+                        onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    />
+                    <Button variant="outline" size="icon" onClick={() => handleQuantityChange(1)}>
+                        <Plus className="h-4 w-4" />
+                    </Button>
+                </div>
+            </div>
+            
+            <Button size="lg" className="w-full text-lg py-6 bg-primary text-primary-foreground hover:bg-primary/90 btn-clay" disabled={!selectedColor} onClick={handleAddToCart}>
+              <ShoppingCart className="mr-3 h-5 w-5" />
+              {selectedColor ? 'Add to Cart' : 'Select a color first'}
+            </Button>
 
             <div className="flex items-center justify-center gap-2 pt-2 text-sm text-muted-foreground">
               <Truck className="h-5 w-5" />
