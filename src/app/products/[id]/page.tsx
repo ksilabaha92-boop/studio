@@ -10,7 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ShoppingCart, BadgePercent } from 'lucide-react';
+import { ShoppingCart, BadgePercent, Truck } from 'lucide-react';
 import Link from 'next/link';
 import { type Product } from '@/lib/types';
 import {
@@ -160,6 +160,10 @@ export default function ProductDetailPage() {
               </SheetContent>
             </Sheet>
 
+            <div className="flex items-center justify-center gap-2 pt-2 text-sm text-muted-foreground">
+              <Truck className="h-5 w-5" />
+              <span>Free delivery within Kelibia</span>
+            </div>
           </div>
         </div>
       </main>
