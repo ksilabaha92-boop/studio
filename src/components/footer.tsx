@@ -37,7 +37,7 @@ export function Footer() {
         </div>
 
         <p className="font-body text-sm text-background/60">© {new Date().getFullYear()} Tohfafino. All rights reserved.</p>
-        <p className="font-cursive text-lg text-background/60 mt-4">By Aziz</p>
+        <p className="font-cursive text-2xl text-background/60 mt-4">By Aziz</p>
       </div>
     </footer>
   );
