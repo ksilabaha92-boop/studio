@@ -30,7 +30,7 @@ export function Footer() {
             </Link>
           </Button>
           <Button variant="ghost" size="icon" asChild className="hover:bg-background/10 rounded-full h-12 w-12">
-            <Link href="tel:+21600000000" aria-label="Phone">
+            <Link href="tel:+21648140022" aria-label="Phone">
               <Phone className="h-6 w-6 text-background/80" />
             </Link>
           </Button>

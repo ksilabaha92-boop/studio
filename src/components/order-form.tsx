@@ -125,7 +125,7 @@ export function OrderForm({ product, selectedColor, onOrderPlaced }: OrderFormPr
           render={({ field }) => (
             <FormItem>
               <FormLabel>Phone Number</FormLabel>
-              <FormControl><Input type="tel" placeholder="+216 12 345 678" {...field} /></FormControl>
+              <FormControl><Input type="tel" placeholder="+216 48 140 022" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
