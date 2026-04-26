@@ -3,11 +3,12 @@
 import { useCallback } from 'react';
 import { type Product } from '@/lib/types';
 import { useFirebase, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, serverTimestamp, deleteField } from 'firebase/firestore';
 import { 
   addDocumentNonBlocking, 
   deleteDocumentNonBlocking, 
-  setDocumentNonBlocking 
+  setDocumentNonBlocking,
+  updateDocumentNonBlocking
 } from '@/firebase/non-blocking-updates';
 
 export function useProducts() {
@@ -46,12 +47,22 @@ export function useProducts() {
   const updateProduct = useCallback((updatedProduct: Product) => {
     if (!firestore || !updatedProduct.id) return;
     const productDocRef = doc(firestore, 'products', updatedProduct.id);
-    const { id, ...dataToUpdate } = updatedProduct;
-    const updateData = {
-      ...dataToUpdate,
-      updatedAt: serverTimestamp(),
-    };
-    setDocumentNonBlocking(productDocRef, updateData, { merge: true });
+    
+    // Create a mutable copy of the data to update, excluding fields that should not change.
+    const { id, createdAt, ...dataToUpdate } = updatedProduct;
+
+    const payload: { [key: string]: any } = { ...dataToUpdate };
+
+    // Always set the update timestamp
+    payload.updatedAt = serverTimestamp();
+
+    // If 'onSale' is explicitly false, we must remove the 'discountPrice' field from Firestore.
+    if (payload.onSale === false) {
+      payload.discountPrice = deleteField();
+    }
+    
+    // Use the specific non-blocking update function.
+    updateDocumentNonBlocking(productDocRef, payload);
   }, [firestore]);
 
   if (error) {
