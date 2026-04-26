@@ -12,7 +12,7 @@ type TohfaLogoProps = {
 export function TohfaLogo({ size = "small", className }: TohfaLogoProps) {
   const sizeClasses = cn(
     {
-      "h-8 md:h-10 w-auto": size === "small", // For header
+      "h-12 md:h-14 w-auto": size === "small", // For header
       "h-20 md:h-24 w-auto": size === "medium", // For splash screen
       "h-28 md:h-32 w-auto": size === "large", // For larger displays if needed
     },
