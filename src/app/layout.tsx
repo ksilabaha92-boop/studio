@@ -7,7 +7,7 @@ import { FirebaseClientProvider } from '@/firebase';
 import { CartProvider } from '@/context/cart-context';
 
 export const metadata: Metadata = {
-  title: 'TigraFINO | Powerful Handcrafted Pottery',
+  title: 'TORA | Powerful Handcrafted Pottery',
   description: 'Luxury handcrafted pottery inspired by the spirit of the tiger.',
 };
 

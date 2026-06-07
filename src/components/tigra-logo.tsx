@@ -6,7 +6,7 @@ type TigraLogoProps = {
 };
 
 /**
- * TigraFINO Logo
+ * TORA Logo
  * Optimized for high-end luxury branding.
  * Uniform height for all letters, Serif font, Ink Stamp effect.
  * Size "Medium" is boosted for the Header.
@@ -57,7 +57,7 @@ export function TigraLogo({ size = "small", className }: TigraLogoProps) {
           filter="url(#luxury-ink-stamp)"
           style={{ letterSpacing: '0.1em', textTransform: 'uppercase' }}
         >
-          TIGRAFINO
+          TORA
         </text>
       </svg>
     </div>

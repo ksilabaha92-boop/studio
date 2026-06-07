@@ -40,7 +40,7 @@ type LoginDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-const ADMIN_EMAIL = 'admin@tigrafino.com';
+const ADMIN_EMAIL = 'admin@tora.com';
 const ADMIN_PASSWORD = 'zxcvbnm';
 
 export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
@@ -61,7 +61,7 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
       toast({
         variant: 'destructive',
         title: 'Access Denied',
-        description: 'Invalid credentials for TigraFINO Command.',
+        description: 'Invalid credentials for TORA Command.',
       });
       form.setError('password', { message: 'Incorrect access code' });
       setIsSubmitting(false);
@@ -96,10 +96,10 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
       <DialogContent className="sm:max-w-[425px] bg-card border-white/10">
         <DialogHeader>
           <DialogTitle className="font-headline text-3xl text-primary flex items-center gap-2 italic">
-            <ShieldCheck className="w-8 h-8" /> Tigra Command
+            <ShieldCheck className="w-8 h-8" /> TORA Command
           </DialogTitle>
           <DialogDescription className="text-white/60">
-            Authorized access only. Enter TigraFINO encrypted key.
+            Authorized access only. Enter TORA encrypted key.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

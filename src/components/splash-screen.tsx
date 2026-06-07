@@ -8,7 +8,7 @@ type SplashScreenProps = {
 };
 
 /**
- * Cinematic Splash Screen for TigraFINO Luxury.
+ * Cinematic Splash Screen for TORA Luxury.
  * Purely automatic transition with a "Spirit of the Wild" theme.
  */
 export function SplashScreen({ onFinish }: SplashScreenProps) {
@@ -37,7 +37,7 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
         >
           <div className="space-y-4">
             <h1 className="font-headline text-4xl md:text-6xl text-primary italic leading-tight tracking-[0.1em] text-glow">
-              Welcome to TigraFINO Luxury
+              Welcome to TORA Luxury
             </h1>
             <p className="font-body text-[10px] md:text-xs tracking-[0.8em] text-primary/60 uppercase animate-pulse">
               Unleash the Spirit of the Wild
