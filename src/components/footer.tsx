@@ -6,9 +6,9 @@ import { TigraLogo } from './tigra-logo';
 export function Footer() {
   return (
     <footer className="relative py-20 mt-32 border-t border-primary/10 overflow-hidden bg-black">
-      {/* Background text: Transparent Orange Watermark - Visibility Increased */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.15] pointer-events-none">
-        <h2 className="font-headline text-[6rem] md:text-[10rem] select-none whitespace-nowrap tracking-tighter text-primary uppercase">TIGRAFINO</h2>
+      {/* Background Watermark: Increased opacity for better visibility as requested */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.2] pointer-events-none">
+        <h2 className="font-headline text-[6rem] md:text-[12rem] select-none whitespace-nowrap tracking-tighter text-primary uppercase">TIGRAFINO</h2>
       </div>
       
       <div className="container relative z-10 mx-auto px-4 text-center">

@@ -8,14 +8,14 @@ type TigraLogoProps = {
 /**
  * TigraFINO Logo
  * A text-only logo with uniform height and size for all letters.
- * Matches the premium "ink stamp" style with high fidelity.
+ * Optimized for the new slim header and premium aesthetic.
  */
 export function TigraLogo({ size = "small", className }: TigraLogoProps) {
   const sizeClasses = cn(
     {
-      "h-6 md:h-8 w-auto": size === "small", // Small for Footer
-      "h-48 md:h-64 w-auto": size === "medium", // Significantly enlarged for Header (Internal Page)
-      "h-64 md:h-80 w-auto": size === "large", // Large for Splash
+      "h-6 md:h-7 w-auto": size === "small", // Tiny for footer
+      "h-10 md:h-12 w-auto": size === "medium", // Perfect fit for the new slim header
+      "h-32 md:h-40 w-auto": size === "large", // Prominent for splash screen
     },
     className
   );
