@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 export function Footer() {
   return (
     <footer className="relative py-20 mt-32 border-t border-primary/10 overflow-hidden">
-      {/* Background text: Transparent Orange */}
+      {/* Background text: Transparent Orange Watermark */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.05] pointer-events-none">
         <h2 className="font-headline text-[5rem] md:text-[8rem] select-none whitespace-nowrap tracking-tighter text-primary">TIGRAFINO</h2>
       </div>

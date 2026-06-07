@@ -25,7 +25,7 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <TigraLogo size="medium" className="text-primary" />
+          <TigraLogo size="large" className="text-primary" />
         </motion.div>
         <motion.p
           initial={{ opacity: 0, y: 10 }}

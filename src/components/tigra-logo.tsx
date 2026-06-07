@@ -13,9 +13,9 @@ type TigraLogoProps = {
 export function TigraLogo({ size = "small", className }: TigraLogoProps) {
   const sizeClasses = cn(
     {
-      "h-14 md:h-16 w-auto": size === "small", // Increased for header
-      "h-24 md:h-28 w-auto": size === "medium",
-      "h-36 md:h-44 w-auto": size === "large",
+      "h-8 md:h-10 w-auto": size === "small", // Shrunk for Footer
+      "h-20 md:h-24 w-auto": size === "medium", // Enlarged for Header
+      "h-36 md:h-44 w-auto": size === "large", // Large for Splash
     },
     className
   );

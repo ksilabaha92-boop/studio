@@ -32,7 +32,7 @@ export function Header() {
               onClick={() => setLoginOpen(true)}
               className="transition-transform duration-300 hover:scale-105 active:scale-95"
             >
-              <TigraLogo size="small" />
+              <TigraLogo size="medium" />
             </button>
           </div>
           <div className="flex-1 flex justify-end">
