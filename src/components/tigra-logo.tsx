@@ -1,3 +1,4 @@
+
 import { cn } from "@/lib/utils";
 
 type TigraLogoProps = {
@@ -13,8 +14,8 @@ type TigraLogoProps = {
 export function TigraLogo({ size = "small", className }: TigraLogoProps) {
   const sizeClasses = cn(
     {
-      "h-6 md:h-7 w-auto": size === "small", // Tiny for footer
-      "h-10 md:h-12 w-auto": size === "medium", // Perfect fit for the new slim header
+      "h-5 md:h-6 w-auto": size === "small", // Tiny for footer
+      "h-12 md:h-16 w-auto": size === "medium", // Larger for the new slim header as requested
       "h-32 md:h-40 w-auto": size === "large", // Prominent for splash screen
     },
     className

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -22,10 +23,10 @@ export function Header() {
   return (
     <>
       <header className={cn(
-        "sticky top-0 z-40 w-full transition-all duration-500 ease-in-out",
+        "fixed top-0 z-40 w-full transition-all duration-500 ease-in-out",
         isScrolled 
-          ? "py-2 bg-black/60 backdrop-blur-xl border-b border-white/10" 
-          : "py-4 bg-black/20 backdrop-blur-sm"
+          ? "py-1 bg-black/60 backdrop-blur-xl border-b border-white/5" 
+          : "py-2 bg-black/10 backdrop-blur-sm"
       )}>
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex-1"></div>
@@ -43,6 +44,8 @@ export function Header() {
         </div>
       </header>
       <LoginDialog open={isLoginOpen} onOpenChange={setLoginOpen} />
+      {/* Spacer to prevent content from going under the fixed header */}
+      <div className="h-16 md:h-20"></div>
     </>
   );
 }

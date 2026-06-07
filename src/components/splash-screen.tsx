@@ -1,3 +1,4 @@
+
 'use client';
 
 import { motion } from 'framer-motion';
@@ -21,10 +22,10 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
     <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col items-center justify-center bg-black overflow-hidden">
       {/* Dynamic Burst Background for Splash */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(25)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-primary/25 blur-[70px]"
+            className="absolute rounded-full bg-primary/30 blur-[80px]"
             initial={{ 
               scale: 0, 
               x: '50%', 
@@ -32,20 +33,20 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
               opacity: 0 
             }}
             animate={{ 
-              scale: [0, 1.8, 0.7, 2.5], 
+              scale: [0, 2, 1, 3], 
               x: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
               y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
-              opacity: [0, 0.5, 0.3, 0] 
+              opacity: [0, 0.6, 0.4, 0] 
             }}
             transition={{ 
-              duration: Math.random() * 2 + 1.5, // Fast movement
+              duration: Math.random() * 2 + 1, // Faster movement
               repeat: Infinity,
               ease: "easeInOut",
-              delay: Math.random() * 1
+              delay: Math.random() * 0.5
             }}
             style={{
-              width: Math.random() * 400 + 150,
-              height: Math.random() * 400 + 150,
+              width: Math.random() * 500 + 200,
+              height: Math.random() * 500 + 200,
             }}
           />
         ))}
@@ -53,19 +54,21 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
 
       <div className="relative z-10 flex flex-col items-center text-center px-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
           className="space-y-6"
         >
-          <h1 className="font-headline text-3xl md:text-5xl text-primary italic">Welcome to TigraFINO Luxury</h1>
-          <p className="font-body text-sm md:text-base tracking-[0.2em] text-primary/70 uppercase max-w-md mx-auto">
+          <h1 className="font-headline text-4xl md:text-6xl text-primary italic leading-tight">
+            Welcome to TigraFINO Luxury
+          </h1>
+          <p className="font-body text-sm md:text-lg tracking-[0.3em] text-primary/80 uppercase max-w-lg mx-auto">
             We hope you enjoy our powerful handcrafted creations
           </p>
         </motion.div>
 
-        {/* Loading Progress Bar */}
-        <div className="mt-16 w-48 h-[2px] bg-primary/10 relative overflow-hidden">
+        {/* Minimal Loading Indicator */}
+        <div className="mt-20 w-32 h-[1px] bg-primary/10 relative overflow-hidden">
           <motion.div 
             className="absolute inset-y-0 left-0 bg-primary"
             initial={{ width: "0%" }}
