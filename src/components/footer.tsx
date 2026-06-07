@@ -7,8 +7,9 @@ import { cn } from '@/lib/utils';
 export function Footer() {
   return (
     <footer className="relative bg-black text-white py-20 mt-32 border-t border-white/5 overflow-hidden">
+      {/* Reduced background text size for better balance */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 opacity-5 pointer-events-none">
-        <h2 className="font-headline text-[20rem] select-none whitespace-nowrap">TIGRAFINO</h2>
+        <h2 className="font-headline text-[10rem] md:text-[14rem] select-none whitespace-nowrap">TIGRAFINO</h2>
       </div>
       
       <div className="container relative z-10 mx-auto px-4 text-center">
@@ -40,7 +41,8 @@ export function Footer() {
           <p className="font-body text-xs text-white/40 tracking-tighter uppercase">
             © {new Date().getFullYear()} TigraFINO Luxury.
           </p>
-          <p className="font-headline text-5xl text-primary/50 italic opacity-80">By Aziz</p>
+          {/* Restored 'By Aziz' original style */}
+          <p className="font-headline text-4xl text-primary/40 italic">By Aziz</p>
         </div>
       </div>
     </footer>

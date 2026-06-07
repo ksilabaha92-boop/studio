@@ -21,19 +21,19 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
       <AnimatedBackground />
       <div className="relative z-10 flex flex-col items-center">
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <TigraLogo size="large" />
         </motion.div>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 0.6, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-12 font-body text-xs tracking-[0.5em] text-white uppercase"
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-12 font-body text-lg tracking-widest text-white/80"
         >
-          Click to enter the wild
+          اضغط للدخول
         </motion.p>
       </div>
     </motion.div>
