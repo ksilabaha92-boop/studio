@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 export function Footer() {
   return (
     <footer className="relative bg-black text-white py-20 mt-32 border-t border-white/5 overflow-hidden">
-      {/* Reduced background text size for better balance */}
+      {/* Background large text */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 opacity-5 pointer-events-none">
         <h2 className="font-headline text-[10rem] md:text-[14rem] select-none whitespace-nowrap">TIGRAFINO</h2>
       </div>
@@ -34,15 +34,14 @@ export function Footer() {
 
         <div className="flex items-center justify-center gap-2 mb-12 text-sm text-primary font-medium tracking-widest uppercase">
           <Truck className="h-5 w-5" />
-          <span>Express Delivery - Kelibia</span>
+          <span>Free delivery within Kelibia</span>
         </div>
 
         <div className="space-y-4">
           <p className="font-body text-xs text-white/40 tracking-tighter uppercase">
             © {new Date().getFullYear()} TigraFINO Luxury.
           </p>
-          {/* Restored 'By Aziz' original style */}
-          <p className="font-headline text-4xl text-primary/40 italic">By Aziz</p>
+          <p className="font-headline text-4xl text-primary/40 italic">By Aziz Ksila</p>
         </div>
       </div>
     </footer>
