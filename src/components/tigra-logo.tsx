@@ -8,14 +8,14 @@ type TigraLogoProps = {
 /**
  * TigraFINO Logo
  * A text-only logo with uniform height and size for all letters.
- * Matches the premium "ink stamp" style requested.
+ * Matches the premium "ink stamp" style with high fidelity.
  */
 export function TigraLogo({ size = "small", className }: TigraLogoProps) {
   const sizeClasses = cn(
     {
-      "h-8 md:h-10 w-auto": size === "small", // Shrunk for Footer
-      "h-20 md:h-24 w-auto": size === "medium", // Enlarged for Header
-      "h-36 md:h-44 w-auto": size === "large", // Large for Splash
+      "h-6 md:h-8 w-auto": size === "small", // Shrunk for Footer as requested
+      "h-24 md:h-28 w-auto": size === "medium", // Enlarged for Header (Admin Trigger)
+      "h-40 md:h-48 w-auto": size === "large", // Large for Splash
     },
     className
   );
@@ -29,7 +29,7 @@ export function TigraLogo({ size = "small", className }: TigraLogoProps) {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <filter id="ink-stamp" x="-5%" y="-5%" width="110%" height="110%">
+          <filter id="ink-stamp-refined" x="-5%" y="-5%" width="110%" height="110%">
             <feGaussianBlur stdDeviation="0.4" result="blurred" />
             <feColorMatrix
               in="blurred"
@@ -37,7 +37,7 @@ export function TigraLogo({ size = "small", className }: TigraLogoProps) {
               values="1 0 0 0 0
                       0 1 0 0 0
                       0 0 1 0 0
-                      0 0 0 20 -8"
+                      0 0 0 18 -7"
               result="sharpened"
             />
             <feComposite in="SourceGraphic" in2="sharpened" operator="atop" />
@@ -50,9 +50,9 @@ export function TigraLogo({ size = "small", className }: TigraLogoProps) {
           textAnchor="middle"
           fontFamily='"Playfair Display", serif'
           fontWeight="800"
-          fontSize="65"
+          fontSize="68"
           fill="currentColor"
-          filter="url(#ink-stamp)"
+          filter="url(#ink-stamp-refined)"
           style={{ letterSpacing: '0.05em', textTransform: 'uppercase' }}
         >
           TIGRAFINO

@@ -6,13 +6,14 @@ import { cn } from '@/lib/utils';
 
 export function Footer() {
   return (
-    <footer className="relative py-20 mt-32 border-t border-primary/10 overflow-hidden">
+    <footer className="relative py-20 mt-32 border-t border-primary/10 overflow-hidden bg-black">
       {/* Background text: Transparent Orange Watermark */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.05] pointer-events-none">
-        <h2 className="font-headline text-[5rem] md:text-[8rem] select-none whitespace-nowrap tracking-tighter text-primary">TIGRAFINO</h2>
+        <h2 className="font-headline text-[6rem] md:text-[10rem] select-none whitespace-nowrap tracking-tighter text-primary uppercase">TIGRAFINO</h2>
       </div>
       
       <div className="container relative z-10 mx-auto px-4 text-center">
+        {/* Shrunk logo in footer */}
         <TigraLogo size="small" className="mx-auto mb-8 text-primary" />
 
         <p className="font-headline text-lg max-w-md mx-auto text-primary/60 mb-8 italic">
