@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -23,17 +22,17 @@ export function Header() {
   return (
     <>
       <header className={cn(
-        "fixed top-0 z-40 w-full transition-all duration-500 ease-in-out",
+        "fixed top-0 z-40 w-full transition-all duration-700 ease-in-out",
         isScrolled 
-          ? "py-1 bg-black/60 backdrop-blur-xl border-b border-white/5" 
-          : "py-2 bg-black/10 backdrop-blur-sm"
+          ? "py-0 bg-black/40 backdrop-blur-2xl border-b border-white/5" 
+          : "py-2 bg-transparent"
       )}>
-        <div className="container mx-auto px-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 flex justify-between items-center h-14 md:h-16">
           <div className="flex-1"></div>
           <div className="flex-1 flex justify-center">
             <button
               onClick={() => setLoginOpen(true)}
-              className="transition-transform duration-300 hover:scale-105 active:scale-95"
+              className="transition-all duration-500 hover:scale-110 active:scale-95 text-primary"
             >
               <TigraLogo size="medium" />
             </button>
@@ -44,8 +43,8 @@ export function Header() {
         </div>
       </header>
       <LoginDialog open={isLoginOpen} onOpenChange={setLoginOpen} />
-      {/* Spacer to prevent content from going under the fixed header */}
-      <div className="h-16 md:h-20"></div>
+      {/* Slim spacer for the slim header */}
+      <div className="h-14 md:h-16"></div>
     </>
   );
 }

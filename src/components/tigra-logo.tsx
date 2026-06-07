@@ -1,4 +1,3 @@
-
 import { cn } from "@/lib/utils";
 
 type TigraLogoProps = {
@@ -8,21 +7,22 @@ type TigraLogoProps = {
 
 /**
  * TigraFINO Logo
- * A text-only logo with uniform height and size for all letters.
- * Optimized for the new slim header and premium aesthetic.
+ * Optimized for high-end luxury branding.
+ * Uniform height for all letters, Serif font, Ink Stamp effect.
  */
 export function TigraLogo({ size = "small", className }: TigraLogoProps) {
   const sizeClasses = cn(
     {
-      "h-5 md:h-6 w-auto": size === "small", // Tiny for footer
-      "h-12 md:h-16 w-auto": size === "medium", // Larger for the new slim header as requested
-      "h-32 md:h-40 w-auto": size === "large", // Prominent for splash screen
+      "h-6 md:h-7": size === "small",   // Footer
+      "h-16 md:h-20": size === "medium", // Header - Now larger as requested
+      "h-36 md:h-48": size === "large",  // Splash screen
     },
+    "w-auto",
     className
   );
 
   return (
-    <div className={cn(sizeClasses, "relative flex items-center justify-center")}>
+    <div className={cn(sizeClasses, "relative flex items-center justify-center transition-all duration-300")}>
       <svg
         className="h-full w-full"
         viewBox="0 0 450 80"
@@ -30,15 +30,15 @@ export function TigraLogo({ size = "small", className }: TigraLogoProps) {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <filter id="ink-stamp-refined" x="-5%" y="-5%" width="110%" height="110%">
-            <feGaussianBlur stdDeviation="0.4" result="blurred" />
+          <filter id="luxury-ink-stamp" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="0.3" result="blurred" />
             <feColorMatrix
               in="blurred"
               type="matrix"
               values="1 0 0 0 0
                       0 1 0 0 0
                       0 0 1 0 0
-                      0 0 0 18 -7"
+                      0 0 0 18 -6"
               result="sharpened"
             />
             <feComposite in="SourceGraphic" in2="sharpened" operator="atop" />
@@ -50,11 +50,11 @@ export function TigraLogo({ size = "small", className }: TigraLogoProps) {
           dy=".35em"
           textAnchor="middle"
           fontFamily='"Playfair Display", serif'
-          fontWeight="800"
-          fontSize="68"
+          fontWeight="900"
+          fontSize="72"
           fill="currentColor"
-          filter="url(#ink-stamp-refined)"
-          style={{ letterSpacing: '0.05em', textTransform: 'uppercase' }}
+          filter="url(#luxury-ink-stamp)"
+          style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}
         >
           TIGRAFINO
         </text>
