@@ -1,6 +1,5 @@
 'use client';
 
-import { TigraLogo } from './tigra-logo';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 
@@ -39,7 +38,7 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
               opacity: [0, 0.5, 0.3, 0] 
             }}
             transition={{ 
-              duration: Math.random() * 2 + 1.5, // Faster movement
+              duration: Math.random() * 2 + 1.5, // Fast movement
               repeat: Infinity,
               ease: "easeInOut",
               delay: Math.random() * 1
@@ -54,21 +53,13 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
 
       <div className="relative z-10 flex flex-col items-center text-center px-4">
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-        >
-          <TigraLogo size="large" className="text-primary mb-12" />
-        </motion.div>
-        
-        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="space-y-4"
+          transition={{ duration: 1, delay: 0.5 }}
+          className="space-y-6"
         >
-          <h2 className="font-headline text-2xl md:text-3xl text-primary italic">Welcome to TigraFINO Luxury</h2>
-          <p className="font-body text-sm md:text-base tracking-[0.2em] text-primary/70 uppercase max-w-md">
+          <h1 className="font-headline text-3xl md:text-5xl text-primary italic">Welcome to TigraFINO Luxury</h1>
+          <p className="font-body text-sm md:text-base tracking-[0.2em] text-primary/70 uppercase max-w-md mx-auto">
             We hope you enjoy our powerful handcrafted creations
           </p>
         </motion.div>
