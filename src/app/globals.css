@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 35 60% 96%;
-    --foreground: 25 25% 15%;
-    --card: 35 55% 92%;
-    --card-foreground: 25 45% 28%;
-    --popover: 35 60% 96%;
-    --popover-foreground: 25 45% 28%;
-    --primary: 25 45% 28%;
-    --primary-foreground: 35 60% 98%;
-    --secondary: 35 50% 88%;
-    --secondary-foreground: 25 45% 28%;
-    --muted: 35 50% 90%;
-    --muted-foreground: 25 35% 45%;
-    --accent: 35 50% 85%;
-    --accent-foreground: 25 45% 28%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 35 30% 85%;
-    --input: 35 30% 85%;
-    --ring: 25 45% 28%;
-    --radius: 0.8rem;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 15 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 15 100% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 15 100% 50%;
+    --radius: 0.5rem;
   }
 }
  
@@ -38,103 +38,34 @@
 
 @layer utilities {
   .text-glow {
-    text-shadow: 0 0 10px hsl(var(--primary) / 0.2), 0 0 25px hsl(var(--primary) / 0.1);
+    text-shadow: 0 0 15px hsl(var(--primary) / 0.5), 0 0 30px hsl(var(--primary) / 0.3);
   }
   .element-glow {
-    box-shadow: 0 0 15px hsl(var(--primary) / 0.1), 0 0 30px hsl(var(--primary) / 0.05);
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.15);
   }
 
-  .btn-clay {
-    @apply shadow-[inset_0_1px_1px_hsla(35,60%,98%,.7),0_1px_2px_hsla(30,70%,25%,.1)] transition-all duration-150 ease-in-out;
-  }
-  .btn-clay:hover {
-    @apply shadow-[inset_0_1px_2px_hsla(35,60%,98%,.7),0_2px_4px_hsla(30,70%,25%,.15)];
-  }
-  .btn-clay:active {
-    @apply shadow-[inset_0_2px_4px_hsla(30,70%,25%,.15)] scale-[0.98];
+  .btn-tigra {
+    @apply relative overflow-hidden bg-primary text-primary-foreground transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,69,0,0.3)];
   }
 
   .animated-bubble {
     @apply absolute rounded-full;
-    background-color: hsl(var(--primary) / 0.2);
-    filter: blur(40px);
-    animation: calm-move 80s infinite alternate ease-in-out;
+    background-color: hsl(var(--primary) / 0.08);
+    filter: blur(80px);
+    animation: calm-move 40s infinite alternate ease-in-out;
   }
 
-  /* Styling each bubble to be more spread out and varied, like cow spots */
-  .animated-bubble:nth-child(1) {
-    width: 350px;
-    height: 350px;
-    top: -5%;
-    left: -10%;
-    animation-duration: 90s;
-  }
-  
-  .animated-bubble:nth-child(2) {
-    width: 300px;
-    height: 300px;
-    top: 20%;
-    left: 85%;
-    animation-name: calm-move-2;
-    animation-duration: 100s;
-    animation-delay: -10s;
-    background-color: hsl(var(--primary) / 0.18); /* Varied opacity */
-  }
-
-  .animated-bubble:nth-child(3) {
-    width: 400px;
-    height: 400px;
-    top: 65%;
-    left: 5%;
-    animation-duration: 120s;
-    animation-delay: -20s;
-    background-color: hsl(var(--primary) / 0.25); /* More opaque */
-  }
-  
-  .animated-bubble:nth-child(4) {
-    width: 250px;
-    height: 250px;
-    top: 80%;
-    left: 70%;
-    animation-name: calm-move-2;
-    animation-duration: 90s;
-    animation-delay: -5s;
-  }
-  
-  .animated-bubble:nth-child(5) {
-    width: 200px;
-    height: 200px;
-    top: 35%;
-    left: 30%;
-    animation-duration: 110s;
-    animation-delay: -15s;
-    background-color: hsl(var(--primary) / 0.15);
-  }
+  .animated-bubble:nth-child(1) { width: 500px; height: 500px; top: -10%; left: -10%; animation-duration: 60s; }
+  .animated-bubble:nth-child(2) { width: 400px; height: 400px; top: 20%; left: 70%; animation-name: calm-move-2; animation-duration: 70s; }
+  .animated-bubble:nth-child(3) { width: 600px; height: 600px; top: 60%; left: -5%; animation-duration: 80s; }
 }
 
 @keyframes calm-move {
-  from {
-    transform: translate(0, 0) scale(1) rotate(0deg);
-  }
-  to {
-    transform: translate(80px, -120px) scale(1.1) rotate(40deg);
-  }
+  from { transform: translate(0, 0) scale(1) rotate(0deg); }
+  to { transform: translate(100px, -150px) scale(1.2) rotate(45deg); }
 }
 
 @keyframes calm-move-2 {
-  from {
-    transform: translate(0, 0) scale(1.2) rotate(0deg);
-  }
-  to {
-    transform: translate(-80px, 100px) scale(1) rotate(-40deg);
-  }
-}
-
-@keyframes move {
-  from {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  to {
-    transform: translate(100px, -100px) rotate(90deg);
-  }
+  from { transform: translate(0, 0) scale(1.3) rotate(0deg); }
+  to { transform: translate(-100px, 120px) scale(1) rotate(-45deg); }
 }

@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { KeyRound } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { useFirebase } from '@/firebase';
 import {
   signInWithEmailAndPassword,
@@ -31,9 +31,8 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
-// Only validate the password field
 const LoginSchema = z.object({
-  password: z.string().min(1, { message: 'Password is required.' }),
+  password: z.string().min(1, { message: 'Access code required.' }),
 });
 
 type LoginDialogProps = {
@@ -41,8 +40,7 @@ type LoginDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-// This will be the hidden, single admin account email and the required password.
-const ADMIN_EMAIL = 'admin@tohfa.com';
+const ADMIN_EMAIL = 'admin@tigrafino.com';
 const ADMIN_PASSWORD = 'zxcvbnm';
 
 export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
@@ -53,76 +51,40 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
-    defaultValues: {
-      password: '',
-    },
+    defaultValues: { password: '' },
   });
 
   async function onSubmit(values: z.infer<typeof LoginSchema>) {
     setIsSubmitting(true);
 
-    // First, check if the entered password is correct.
     if (values.password !== ADMIN_PASSWORD) {
       toast({
         variant: 'destructive',
-        title: 'Authentication Failed',
-        description: 'The password you entered is incorrect.',
+        title: 'Access Denied',
+        description: 'Invalid credentials for TigraFINO Command.',
       });
-      form.setError('password', { message: 'Incorrect password' });
+      form.setError('password', { message: 'Incorrect access code' });
       setIsSubmitting(false);
       return;
     }
     
-    // If password is correct, proceed with the sign-in or create logic.
     try {
-      // Try to sign in with the hardcoded credentials.
       await signInWithEmailAndPassword(auth, ADMIN_EMAIL, ADMIN_PASSWORD);
-      toast({
-        title: 'Success',
-        description: 'Welcome back, Admin!',
-      });
       onOpenChange(false);
       router.push('/admin');
     } catch (signInError: any) {
-      // If sign-in fails, it's likely because the account doesn't exist yet.
-      // Codes 'auth/invalid-credential' or 'auth/user-not-found' indicate this.
       if (signInError.code === 'auth/invalid-credential' || signInError.code === 'auth/user-not-found') {
         try {
-          // Create the admin account for the first time.
           const userCredential = await createUserWithEmailAndPassword(auth, ADMIN_EMAIL, ADMIN_PASSWORD);
-          const user = userCredential.user;
-
-          // Add the user to the 'admins' collection to grant privileges.
           if (firestore) {
-             const adminRef = doc(firestore, 'admins', user.uid);
-             await setDoc(adminRef, { uid: user.uid, email: user.email, createdAt: serverTimestamp() });
+             const adminRef = doc(firestore, 'admins', userCredential.user.uid);
+             await setDoc(adminRef, { uid: userCredential.user.uid, email: ADMIN_EMAIL, createdAt: serverTimestamp() });
           }
-          
-          toast({
-            title: 'Admin Account Initialized',
-            description: 'Welcome! The admin account has been set up.',
-          });
           onOpenChange(false);
           router.push('/admin');
-
-        } catch (creationError: any) {
-          // This block should ideally not be hit if the password meets Firebase requirements,
-          // but it's good for catching unexpected errors during first-time setup.
-          console.error('Admin account creation failed unexpectedly:', creationError);
-          toast({
-              variant: 'destructive',
-              title: 'Setup Error',
-              description: 'Could not create the admin account. Please check the console.',
-            });
+        } catch (creationError) {
+          console.error(creationError);
         }
-      } else {
-        // Handle other, unexpected sign-in errors.
-        console.error('Admin login failed:', signInError);
-        toast({
-          variant: 'destructive',
-          title: 'Authentication Failed',
-          description: 'An unexpected error occurred. Please try again.',
-        });
       }
     } finally {
       setIsSubmitting(false);
@@ -131,27 +93,28 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] bg-background">
+      <DialogContent className="sm:max-w-[425px] bg-card border-white/10">
         <DialogHeader>
-          <DialogTitle className="font-headline text-3xl text-primary flex items-center gap-2">
-            <KeyRound className="w-6 h-6" /> Admin Access
+          <DialogTitle className="font-headline text-3xl text-primary flex items-center gap-2 italic">
+            <ShieldCheck className="w-8 h-8" /> Tigra Command
           </DialogTitle>
-          <DialogDescription>
-            Enter the site password to access the admin dashboard.
+          <DialogDescription className="text-white/60">
+            Authorized access only. Enter TigraFINO encrypted key.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="text-xs uppercase tracking-widest text-white/40">Access Code</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
                       placeholder="••••••••"
+                      className="bg-black/50 border-white/10 text-white focus:border-primary"
                       {...field}
                     />
                   </FormControl>
@@ -159,8 +122,8 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full btn-clay" disabled={isSubmitting}>
-              {isSubmitting ? 'Verifying...' : 'Unlock'}
+            <Button type="submit" className="w-full btn-tigra py-6 font-bold uppercase tracking-widest" disabled={isSubmitting}>
+              {isSubmitting ? 'Verifying...' : 'Unlock Portal'}
             </Button>
           </form>
         </Form>

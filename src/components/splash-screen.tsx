@@ -1,6 +1,6 @@
 'use client';
 
-import { TohfaLogo } from './tohfa-logo';
+import { TigraLogo } from './tigra-logo';
 import { motion } from 'framer-motion';
 import { AnimatedBackground } from './animated-background';
 
@@ -14,27 +14,26 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.7, ease: 'easeOut' }}
-      className="fixed inset-0 z-50 flex h-screen w-screen cursor-pointer flex-col items-center justify-center"
+      transition={{ duration: 0.5 }}
+      className="fixed inset-0 z-50 flex h-screen w-screen cursor-pointer flex-col items-center justify-center bg-black"
       onClick={onFinish}
     >
       <AnimatedBackground />
       <div className="relative z-10 flex flex-col items-center">
         <motion.div
-          className="text-glow text-primary"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
-          <TohfaLogo size="medium" />
+          <TigraLogo size="large" />
         </motion.div>
         <motion.p
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.7, ease: 'easeOut' }}
-          className="mt-8 font-body text-lg text-muted-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 0.6, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="mt-12 font-body text-xs tracking-[0.5em] text-white uppercase"
         >
-          Click to enter
+          Click to enter the wild
         </motion.p>
       </div>
     </motion.div>

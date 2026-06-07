@@ -7,8 +7,8 @@ import { FirebaseClientProvider } from '@/firebase';
 import { CartProvider } from '@/context/cart-context';
 
 export const metadata: Metadata = {
-  title: 'Tohfafino',
-  description: 'Handcrafted pottery with a touch of soul.',
+  title: 'TigraFINO | Powerful Handcrafted Pottery',
+  description: 'Luxury handcrafted pottery inspired by the spirit of the tiger.',
 };
 
 export default function RootLayout({
@@ -21,9 +21,9 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
       </head>
-      <body className={cn('font-body antialiased', 'min-h-screen bg-background')}>
+      <body className={cn('font-body antialiased', 'min-h-screen bg-black text-white')}>
         <FirebaseClientProvider>
           <CartProvider>
             <AnimatedBackground />

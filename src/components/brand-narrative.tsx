@@ -1,9 +1,10 @@
 export function BrandNarrative() {
   return (
-    <section className="py-20 md:py-32">
-        <div className="text-center max-w-3xl mx-auto">
-            <p className="font-headline text-2xl md:text-3xl text-primary/90 leading-relaxed">
-              Handcrafted with passion, our creations transform humble clay into timeless treasures. More than objects, they are stories molded by hand, waiting to become a part of your home.
+    <section className="py-32">
+        <div className="text-center max-w-3xl mx-auto px-4">
+            <h2 className="font-headline text-primary text-xs tracking-[0.4em] uppercase mb-8">The Tigrafino Legacy</h2>
+            <p className="font-headline text-3xl md:text-4xl text-white leading-tight italic">
+              "Forged in heat, shaped by hand, and inspired by the relentless power of the tiger. TigraFINO creates artifacts for those who lead, not those who follow."
             </p>
         </div>
     </section>
