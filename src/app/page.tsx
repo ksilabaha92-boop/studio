@@ -32,9 +32,9 @@ export default function Home() {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-12 md:py-24">
         <div className="text-center mb-24">
-          <p className="font-headline text-black text-xs tracking-[0.6em] uppercase mb-4">Precision Craftsmanship</p>
-          <h1 className="font-headline text-5xl md:text-7xl text-black italic mb-8">Elegance Meets Power</h1>
-          <div className="h-1 w-24 bg-black mx-auto mb-12"></div>
+          <p className="font-headline text-primary text-xs tracking-[0.6em] uppercase mb-4">Precision Craftsmanship</p>
+          <h1 className="font-headline text-5xl md:text-7xl text-primary italic mb-8">Elegance Meets Power</h1>
+          <div className="h-1 w-24 bg-primary mx-auto mb-12"></div>
         </div>
         
         <ProductGallery />

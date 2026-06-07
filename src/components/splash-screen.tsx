@@ -25,13 +25,13 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <TigraLogo size="medium" className="text-black" />
+          <TigraLogo size="medium" className="text-primary" />
         </motion.div>
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 0.6, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-12 font-body text-base tracking-[0.3em] text-black uppercase"
+          className="mt-12 font-body text-base tracking-[0.3em] text-primary uppercase"
         >
           اضغط للدخول
         </motion.p>
