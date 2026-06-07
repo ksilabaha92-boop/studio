@@ -23,14 +23,14 @@ export function Header() {
     <>
       <header className={cn(
         "sticky top-0 z-40 w-full transition-all duration-300 ease-in-out",
-        isScrolled ? "py-2 bg-background/90 backdrop-blur-xl border-b border-white/5" : "py-6"
+        isScrolled ? "py-3 bg-background/95 backdrop-blur-xl border-b border-white/5" : "py-8"
       )}>
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex-1"></div>
           <div className="flex-1 flex justify-center">
             <button
               onClick={() => setLoginOpen(true)}
-              className="transition-transform duration-300 hover:scale-105"
+              className="transition-transform duration-300 hover:scale-105 active:scale-95"
             >
               <TigraLogo size="small" />
             </button>

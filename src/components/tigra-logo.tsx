@@ -8,23 +8,27 @@ type TigraLogoProps = {
 /**
  * A refined, text-only logo for TigraFINO.
  * Uses "Playfair Display" for a premium feel.
- * No underline, consistent baseline.
+ * Ensures consistent height and baseline alignment.
  */
 export function TigraLogo({ size = "small", className }: TigraLogoProps) {
-  const containerClasses = cn(
-    "flex items-baseline font-headline tracking-tight",
-    {
-      "scale-75": size === "small",
-      "scale-100": size === "medium",
-      "scale-125": size === "large",
-    },
-    className
-  );
-
   return (
-    <div className={containerClasses}>
-      <span className="text-primary text-4xl font-bold italic">Tigra</span>
-      <span className="text-primary text-4xl font-black uppercase ml-1">FINO</span>
+    <div className={cn(
+      "flex items-center font-headline tracking-tighter select-none",
+      {
+        "gap-1": size === "small",
+        "gap-2": size !== "small",
+        "scale-90 md:scale-100": size === "small",
+        "scale-110 md:scale-125": size === "medium",
+        "scale-150 md:scale-[2]": size === "large",
+      },
+      className
+    )}>
+      <span className="text-primary text-3xl font-bold italic leading-none">
+        Tigra
+      </span>
+      <span className="text-primary text-3xl font-black uppercase leading-none">
+        FINO
+      </span>
     </div>
   );
 }
