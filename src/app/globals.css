@@ -57,7 +57,7 @@
     @apply relative overflow-hidden bg-primary text-primary-foreground transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg font-bold uppercase tracking-[0.3em];
   }
 
-  /* Tiger Stripe Background Animation */
+  /* Moving Tiger Stripes (Cinematic Light Streaks) */
   .tiger-stripe {
     @apply absolute pointer-events-none opacity-20;
     background: linear-gradient(45deg, transparent 45%, var(--primary) 50%, transparent 55%);
