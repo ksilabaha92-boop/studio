@@ -20,12 +20,12 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col items-center justify-center bg-black overflow-hidden">
-      {/* Dynamic Burst Background */}
+      {/* Dynamic Burst Background for Splash */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(15)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-primary/20 blur-[60px]"
+            className="absolute rounded-full bg-primary/25 blur-[70px]"
             initial={{ 
               scale: 0, 
               x: '50%', 
@@ -33,20 +33,20 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
               opacity: 0 
             }}
             animate={{ 
-              scale: [0, 1.5, 0.5, 2], 
+              scale: [0, 1.8, 0.7, 2.5], 
               x: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
               y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
-              opacity: [0, 0.4, 0.2, 0] 
+              opacity: [0, 0.5, 0.3, 0] 
             }}
             transition={{ 
-              duration: Math.random() * 3 + 2, 
+              duration: Math.random() * 2 + 1.5, // Faster movement
               repeat: Infinity,
               ease: "easeInOut",
-              delay: Math.random() * 2
+              delay: Math.random() * 1
             }}
             style={{
-              width: Math.random() * 300 + 100,
-              height: Math.random() * 300 + 100,
+              width: Math.random() * 400 + 150,
+              height: Math.random() * 400 + 150,
             }}
           />
         ))}
