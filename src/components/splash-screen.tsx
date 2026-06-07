@@ -15,7 +15,7 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-50 flex h-screen w-screen cursor-pointer flex-col items-center justify-center bg-black"
+      className="fixed inset-0 z-50 flex h-screen w-screen cursor-pointer flex-col items-center justify-center bg-background"
       onClick={onFinish}
     >
       <AnimatedBackground />
@@ -25,13 +25,13 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <TigraLogo size="medium" />
+          <TigraLogo size="medium" className="text-black" />
         </motion.div>
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 0.6, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-12 font-body text-base tracking-[0.3em] text-white/80 uppercase"
+          className="mt-12 font-body text-base tracking-[0.3em] text-black uppercase"
         >
           اضغط للدخول
         </motion.p>

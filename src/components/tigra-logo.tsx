@@ -7,15 +7,15 @@ type TigraLogoProps = {
 
 /**
  * TigraFINO Logo
- * A high-end text logo that mimics a premium ink-stamp effect.
- * All letters are perfectly uniform in height and size (All Caps).
+ * A text-only logo with uniform height and size for all letters.
+ * Matches the premium "ink stamp" style requested.
  */
 export function TigraLogo({ size = "small", className }: TigraLogoProps) {
   const sizeClasses = cn(
     {
-      "h-10 md:h-12 w-auto": size === "small",
-      "h-20 md:h-24 w-auto": size === "medium",
-      "h-32 md:h-40 w-auto": size === "large",
+      "h-14 md:h-16 w-auto": size === "small", // Increased for header
+      "h-24 md:h-28 w-auto": size === "medium",
+      "h-36 md:h-44 w-auto": size === "large",
     },
     className
   );
@@ -24,24 +24,20 @@ export function TigraLogo({ size = "small", className }: TigraLogoProps) {
     <div className={cn(sizeClasses, "relative flex items-center justify-center")}>
       <svg
         className="h-full w-full"
-        viewBox="0 0 450 60"
+        viewBox="0 0 450 80"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* 
-            فلتر "ختم الحبر" ليعطي ملمساً طبيعياً وفخماً للحروف 
-            يشبه الأسلوب الذي أعجبك في الصورة الأصلية.
-          */}
           <filter id="ink-stamp" x="-5%" y="-5%" width="110%" height="110%">
-            <feGaussianBlur stdDeviation="0.3" result="blurred" />
+            <feGaussianBlur stdDeviation="0.4" result="blurred" />
             <feColorMatrix
               in="blurred"
               type="matrix"
               values="1 0 0 0 0
                       0 1 0 0 0
                       0 0 1 0 0
-                      0 0 0 18 -7"
+                      0 0 0 20 -8"
               result="sharpened"
             />
             <feComposite in="SourceGraphic" in2="sharpened" operator="atop" />
@@ -54,8 +50,8 @@ export function TigraLogo({ size = "small", className }: TigraLogoProps) {
           textAnchor="middle"
           fontFamily='"Playfair Display", serif'
           fontWeight="800"
-          fontSize="50"
-          fill="hsl(var(--primary))"
+          fontSize="65"
+          fill="currentColor"
           filter="url(#ink-stamp)"
           style={{ letterSpacing: '0.05em', textTransform: 'uppercase' }}
         >
