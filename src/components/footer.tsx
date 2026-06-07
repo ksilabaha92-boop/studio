@@ -2,7 +2,6 @@ import { Instagram, Phone, Truck } from 'lucide-react';
 import { Button } from './ui/button';
 import Link from 'next/link';
 import { TigraLogo } from './tigra-logo';
-import { cn } from '@/lib/utils';
 
 export function Footer() {
   return (
@@ -42,7 +41,7 @@ export function Footer() {
           <p className="font-body text-[10px] text-primary/40 tracking-widest uppercase">
             © {new Date().getFullYear()} TigraFINO Luxury.
           </p>
-          <p className="font-headline text-xl text-primary/60 italic">By Aziz Ksila</p>
+          <p className="font-headline text-xl text-primary/60 italic font-bold">By Aziz Ksila</p>
         </div>
       </div>
     </footer>
