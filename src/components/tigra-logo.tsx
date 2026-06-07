@@ -9,20 +9,21 @@ type TigraLogoProps = {
  * TigraFINO Logo
  * Optimized for high-end luxury branding.
  * Uniform height for all letters, Serif font, Ink Stamp effect.
+ * Size "Medium" is boosted for the Header.
  */
 export function TigraLogo({ size = "small", className }: TigraLogoProps) {
   const sizeClasses = cn(
     {
-      "h-6 md:h-7": size === "small",   // Footer
-      "h-16 md:h-20": size === "medium", // Header - Now larger as requested
-      "h-36 md:h-48": size === "large",  // Splash screen
+      "h-5 md:h-6": size === "small",   // Footer: Small & Elegant
+      "h-20 md:h-24": size === "medium", // Header: Large & Powerful as requested
+      "h-40 md:h-56": size === "large",  // Splash screen: Iconic
     },
     "w-auto",
     className
   );
 
   return (
-    <div className={cn(sizeClasses, "relative flex items-center justify-center transition-all duration-300")}>
+    <div className={cn(sizeClasses, "relative flex items-center justify-center transition-all duration-500")}>
       <svg
         className="h-full w-full"
         viewBox="0 0 450 80"
@@ -31,14 +32,14 @@ export function TigraLogo({ size = "small", className }: TigraLogoProps) {
       >
         <defs>
           <filter id="luxury-ink-stamp" x="-10%" y="-10%" width="120%" height="120%">
-            <feGaussianBlur stdDeviation="0.3" result="blurred" />
+            <feGaussianBlur stdDeviation="0.4" result="blurred" />
             <feColorMatrix
               in="blurred"
               type="matrix"
               values="1 0 0 0 0
                       0 1 0 0 0
                       0 0 1 0 0
-                      0 0 0 18 -6"
+                      0 0 0 20 -8"
               result="sharpened"
             />
             <feComposite in="SourceGraphic" in2="sharpened" operator="atop" />
@@ -54,7 +55,7 @@ export function TigraLogo({ size = "small", className }: TigraLogoProps) {
           fontSize="72"
           fill="currentColor"
           filter="url(#luxury-ink-stamp)"
-          style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}
+          style={{ letterSpacing: '0.1em', textTransform: 'uppercase' }}
         >
           TIGRAFINO
         </text>

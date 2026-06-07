@@ -1,38 +1,18 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 type SplashScreenProps = {
   onFinish: () => void;
 };
 
-type Burst = {
-  id: number;
-  width: number;
-  height: number;
-  duration: number;
-  delay: number;
-  startX: string;
-  startY: string;
-};
-
+/**
+ * Cinematic Splash Screen for TigraFINO Luxury.
+ * Purely automatic transition with a "Spirit of the Wild" theme.
+ */
 export function SplashScreen({ onFinish }: SplashScreenProps) {
-  const [bursts, setBursts] = useState<Burst[]>([]);
-
   useEffect(() => {
-    // Generate bursts data only on client side to avoid hydration mismatch
-    const newBursts = Array.from({ length: 20 }).map((_, i) => ({
-      id: i,
-      width: Math.random() * 400 + 200,
-      height: Math.random() * 400 + 200,
-      duration: Math.random() * 1.5 + 1,
-      delay: Math.random() * 0.5,
-      startX: `${Math.random() * 100}%`,
-      startY: `${Math.random() * 100}%`,
-    }));
-    setBursts(newBursts);
-
     const timer = setTimeout(() => {
       onFinish();
     }, 5000);
@@ -42,56 +22,39 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col items-center justify-center bg-black overflow-hidden">
-      {/* Cinematic Burst Background */}
+      {/* Tiger Streaks Background for Splash */}
       <div className="absolute inset-0 pointer-events-none">
-        {bursts.map((burst) => (
-          <motion.div
-            key={burst.id}
-            className="absolute rounded-full bg-primary/20 blur-[100px]"
-            initial={{ scale: 0, opacity: 0, x: burst.startX, y: burst.startY }}
-            animate={{ 
-              scale: [0.5, 2, 1, 4], 
-              opacity: [0, 0.7, 0.3, 0],
-              x: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
-              y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
-            }}
-            transition={{ 
-              duration: burst.duration,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: burst.delay
-            }}
-            style={{
-              width: burst.width,
-              height: burst.height,
-            }}
-          />
-        ))}
+        <div className="tiger-stripe opacity-40" style={{ animationDuration: '3s' }}></div>
+        <div className="tiger-stripe opacity-20" style={{ animationDelay: '1s', animationDuration: '4s' }}></div>
       </div>
 
       <div className="relative z-10 flex flex-col items-center text-center px-6">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-          className="space-y-8"
+          transition={{ duration: 3, ease: "easeOut" }}
+          className="space-y-10"
         >
           <div className="space-y-4">
-            <h1 className="font-headline text-4xl md:text-7xl text-primary italic leading-tight tracking-tight">
+            <h1 className="font-headline text-4xl md:text-6xl text-primary italic leading-tight tracking-[0.1em] text-glow">
               Welcome to TigraFINO Luxury
             </h1>
-            <div className="h-[1px] w-24 bg-primary/40 mx-auto" />
+            <p className="font-body text-[10px] md:text-xs tracking-[0.8em] text-primary/60 uppercase animate-pulse">
+              Unleash the Spirit of the Wild
+            </p>
           </div>
           
-          <p className="font-body text-xs md:text-sm tracking-[0.5em] text-primary/70 uppercase max-w-lg mx-auto leading-loose">
-            Power, Precision, and the Spirit of the Wild in every handcrafted piece.
+          <div className="h-[1px] w-32 bg-primary/20 mx-auto" />
+          
+          <p className="font-headline text-lg md:text-xl text-primary/80 italic font-medium max-w-lg mx-auto leading-relaxed">
+            "Every creation is a testament to power and precision."
           </p>
         </motion.div>
 
-        {/* Minimal Progress Bar - Cinema Style */}
-        <div className="mt-24 w-48 h-[1px] bg-white/5 relative overflow-hidden rounded-full">
+        {/* Minimal Cinematic Loader Bar */}
+        <div className="mt-32 w-40 h-[1px] bg-white/5 relative overflow-hidden rounded-full">
           <motion.div 
-            className="absolute inset-y-0 left-0 bg-primary shadow-[0_0_10px_rgba(255,102,0,0.8)]"
+            className="absolute inset-y-0 left-0 bg-primary shadow-[0_0_15px_rgba(255,102,0,1)]"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
             transition={{ duration: 5, ease: "easeInOut" }}
